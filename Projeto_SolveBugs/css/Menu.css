@@ -1,0 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@media (max-width:768px) {
+    .titulo {
+        margin-top: 32vh;
+        padding-left: 20px;
+    }
+
+    .lista1 {
+        border-right: 0;
+    }
+
+    .lista2 {
+        border-right: transparent;
+    }
+
+    .menu {
+        flex-direction: column;
+        /* agora sim em coluna */
+        align-items: center;
+    }
+
+    .menu img {
+        margin-bottom: 10px;
+    }
+
+    .acoes-direita {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .barraPesquisa {
+        width: 70%;
+        margin: 0;
+    }
+
+    .navbar-toggler {
+        width: auto;
+    }
+
+
+
+
+    .carousel img {
+        height: 40vh;
+    }
+
+    .container-lista {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lista {
+        width: 90%;
+    }
+}
+
+body {
+    background-color: #1b2838;
+    color: rgb(162, 201, 212);
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.acoes-direita {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.barraPesquisa {
+    flex: 1;
+    width: 400px;
+    margin: 10px;
+
+}
+
+.input-pesquisa {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+#carouselExampleAutoplaying {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0px 30px 30px rgba(0, 0, 0, .5);
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.carousel {
+    margin-top: 120px;
+}
+
+.carousel img {
+    height: 60vh;
+    object-fit: cover;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #172230;
+    z-index: 1000;
+
+}
+
+.text {
+
+    max-width: 900px;
+    margin: 40px auto;
+    margin-top: 120px;
+    margin-bottom: 0%;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+}
+
+.rodape {
+    height: 20vh;
+    width: 100%;
+    background-color: #151f2c;
+    margin-top: 10vh;
+    padding: 1vh;
+}
+
+.container-lista {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
+
+}
+
+
+.lista1 {
+    width: 100px;
+    border-right: 1px solid transparent;
+    padding: 0 30vh 0 10vh;
+
+}
+
+.lista2 {
+    width: 100px;
+    border-right: 1px solid transparent;
+    padding: 0 30vh 0 10vh;
+}
+
+.lista3 {
+    width: 100px;
+    padding: 0 30vh 0 10vh;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+
+}
+
+li {
+    margin: 10px 0;
+}
+
+a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #1b2838;
+    padding: 10px;
+    padding-right: 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: rgb(162, 201, 212);
+    transition: 0.2s;
+
+}
+
+a:hover {
+    background-color: rgba(255, 255, 255, 0.096);
+}
+
+.img {
+    width: 70px;
+    height: 70px;
+    border-radius: 4px;
+}
+
+.lista {
+    width: 250px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.icones {
+    padding: 40px 0 0 0;
+}
+
+.imgPerfil {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+}
+
+.imgBut {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    text-decoration: none;
+}
+
+
+.popupPerfil {
+    background: #151f2c;
+    padding: 20px;
+    border-radius: 50px;
+    width: 300px;
+    height: 400px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+    margin-top: 60px;
+    background-color: #dc3545;
+    width: 100px;
+    height: 50px;
+}
+
+button {
+    padding: 7px 7px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    background-color: transparent;
+    color: white;
+
+}
+
+.titulo {
+    margin-top: 130px;
+    padding-left: 20px;
+}
+
+.linha a {
+    padding-right: 200px;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 8px;
+}

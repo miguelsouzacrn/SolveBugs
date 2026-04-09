@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0e141b, #1b2838);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 1200px;
+    height: 650px;
+    background: #1b2838;
+    border-radius: 20px;
+    display: flex;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: #171a21;
+    padding: 30px 20px;
+    border-right: 1px solid #2a475e;
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.profile img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #66c0f4;
+    display: block;
+    margin: 0 auto;
+}
+
+.profile h3 {
+    margin-top: 15px;
+    color: #fff;
+}
+
+.profile p {
+    font-size: 13px;
+    color: #8f98a0;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #d4b499;
+    transition: 0.3s;
+}
+
+.menu li:hover {
+    background: #2a475e;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 40px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    color: #fff;
+}
+
+.buscar input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: #2a475e;
+    color: #fff;
+}
+
+.nova {
+    background: linear-gradient(to bottom, #1999ff, #0e7bdc);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+}
+
+.nova:hover {
+    filter: brightness(1.1);
+}
+
+/* Cards das soluções */
+
+.solucoes{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#2a475e;
+    padding:20px;
+    border-radius:12px;
+    color:white;
+    box-shadow:0 10px 20px rgba(0,0,0,0.4);
+}
+
+.card h3{
+    margin-bottom:15px;
+}
+
+.card button{
+    width:100%;
+    margin-top:8px;
+    padding:8px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.fav{
+    background:#f1c40f;
+    color:black;
+}
+
+.delete{
+    background:#e74c3c;
+    color:white;
+}
+
+/* animação dos cards */
+
+.card{
+    background:#2a475e;
+    padding:20px;
+    border-radius:12px;
+    color:white;
+    box-shadow:0 10px 20px rgba(0,0,0,0.4);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 30px rgba(0,0,0,0.6);
+}
+
+/* scroll soluções */
+
+.solucoes{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+    max-height:480px;
+    overflow-y:auto;
+}
+
+/* scrollbar */
+
+.solucoes::-webkit-scrollbar{
+    width:6px;
+}
+
+.solucoes::-webkit-scrollbar-thumb{
+    background:#66c0f4;
+    border-radius:10px;
+}
+
+/* notificação */
+
+.notificacao{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#66c0f4;
+    color:black;
+    padding:12px 18px;
+    border-radius:8px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+    animation:slide .3s;
+}
+
+@keyframes slide{
+from{transform:translateX(100%);opacity:0}
+to{transform:translateX(0);opacity:1}
+}
+
+/* mensagem vazio */
+
+.vazio{
+    text-align:center;
+    color:#8f98a0;
+    margin-top:120px;
+}
+
+/* responsivo */
+
+@media(max-width:900px){
+
+.container{
+    width:95%;
+    height:auto;
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+    border-right:none;
+    border-bottom:1px solid #2a475e;
+}
+
+.main{
+    padding:20px;
+}
+
+}
+
+.close-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px; /* 👈 mudou aqui */
+    background: linear-gradient(to bottom, #ff5c5c, #c0392b);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    filter: brightness(1.1);
+}

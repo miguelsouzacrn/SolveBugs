@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usuario</title>
+
+<link rel="stylesheet" href="./css/Usuario.css">
+
+</head>
+
+<body>
+<button class="close-btn" onclick="fecharPagina()">Fechar</button>
+<script>
+function fecharPagina() {
+    window.location.href = "Jogo.html";
+}
+
+function fecharPagina() {
+    window.history.back();
+}
+</script>
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<div class="profile">
+<img src="./img/perfilIcon.avif">
+<h3>João Silva</h3>
+<p>joao@gmail.com</p>
+</div>
+
+<ul class="menu">
+<li onclick="mostrarSolucoes()">⭐ Todas </li>
+<li onclick="mostrarFavoritos()">⭐ Favoritos</li>
+<li onclick="mostrarHistorico()">🕘 Histórico</li>
+</ul>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="header">
+
+<h2 id="titulo">Minhas Soluções</h2>
+
+<div class="buscar">
+<input type="text" id="campoBusca" placeholder="Buscar solução...">
+<button class="nova" onclick="novaSolucao()">Nova Solução</button>
+</div>
+
+</div>
+
+<div id="conteudo" class="solucoes"></div>
+
+</div>
+
+</div>
+
+<span id="contador"></span>
+
+<script src="./js/Usuario.js"></script>
+
+</body>
+</html>
