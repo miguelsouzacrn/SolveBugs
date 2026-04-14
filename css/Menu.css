@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-@media (max-width:768px) {
+@media (max-width:600px) {
     .titulo {
         margin-top: 32vh;
         padding-left: 20px;
@@ -16,7 +16,6 @@
 
     .menu {
         flex-direction: column;
-        /* agora sim em coluna */
         align-items: center;
     }
 
@@ -42,11 +41,6 @@
 
 
 
-
-    .carousel img {
-        height: 40vh;
-    }
-
     .container-lista {
         flex-direction: column;
         align-items: center;
@@ -54,6 +48,17 @@
 
     .lista {
         width: 90%;
+    }
+
+
+    .carousel-inner {
+        width: 100%;
+        height: 400px;
+    }
+
+    .carousel img {
+        background-position: center;
+        background-size: cover;
     }
 }
 
@@ -92,15 +97,20 @@ body {
     box-shadow: 0px 30px 30px rgba(0, 0, 0, .5);
     margin-top: 20px;
     margin-bottom: 30px;
+    
 }
-
+.carousel-inner{
+    height: 400px;
+}
 .carousel {
     margin-top: 120px;
 }
 
 .carousel img {
-    height: 60vh;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+object-position: center;
 }
 
 .navbar {
@@ -212,12 +222,18 @@ a:hover {
     width: 80px;
     height: 80px;
     border-radius: 50px;
+    border: solid 2px;
+    border-color: rgb(131, 214, 236);
+    background-color: rgb(131, 214, 236);
 }
 
 .imgBut {
     width: 60px;
     height: 60px;
+    border: solid 2px;
+    border-color: rgb(131, 214, 236);
     border-radius: 50px;
+    background-color: rgb(131, 214, 236);
 }
 
 .overlay {
@@ -274,6 +290,6 @@ button {
 
 .carousel-caption {
     background: rgba(0, 0, 0, 0.5);
-    padding: 10px;
+    padding: 2vh;
     border-radius: 8px;
 }
