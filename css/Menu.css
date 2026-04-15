@@ -68,11 +68,13 @@
 
     }
 
-    .carousel-caption {
-        background: rgba(0, 0, 0, 0.5) ;
-        padding: 2vh ;
-        border-radius: 8px;
-    }
+   .carousel-caption {
+    bottom: 10px; /* Reduz a altura no mobile */
+    padding: 0;
+  }
+  .carousel-caption h5 {
+    font-size: 14px; /* Diminui o título */
+  }
 }
 
 body {
