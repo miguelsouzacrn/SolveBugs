@@ -91,7 +91,7 @@ body {
     transform: translateY(-50%);
 }
 
-@media(max-width:480px){
+@media(max-width:780px){
 .barra-comentario {
     width: 100%;
     background-color: rgb(31, 46, 65);
@@ -130,7 +130,7 @@ input {
     background: rgb(162, 201, 212);
     border: none;
     color: rgb(27, 40, 56);
-    border-radius: 5px;
+    border-radius: 100px !important;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -140,6 +140,11 @@ input {
     border: 2px solid rgb(162, 201, 212);
     background: rgb(27, 40, 56);
     color: rgb(162, 201, 212);
+}
+
+.close-btn{
+    border-radius: 50px !important;
+    
 }
 
 }
@@ -195,15 +200,20 @@ input{
 
 .close-btn {
     position: fixed;
-    top: 20px;
-    left: 20px; /* 👈 mudou aqui */
-    background: linear-gradient(to bottom, #ff5c5c, #c0392b);
+    top: 10px;
+    left: 10px; /* 👈 mudou aqui */
+    background: #B82C46;
     border: none;
-    padding: 10px 18px;
+    padding: 12px 20px;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 17px;
     font-weight: bold;
-    color: white;
+    color: rgb(255, 255, 255);
     z-index: 1000;
     transition: 0.3s;
+}
+
+.close-btn:hover{
+        background: #dd3453;
 }
