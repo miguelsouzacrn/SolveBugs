@@ -1,5 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+/* PALETA */
+:root {
+    --bg: #1b2838;
+    --bg-dark: #141d29;
+    --bg-light: #273850;
+    --text: #a2c9d4;
+    --text-muted: #c5c5c5;
+    --border: rgba(255, 255, 255, 0.2);
+    --accent: #38bdf8;
+}
+
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -7,119 +19,184 @@
     font-family: "Poppins", sans-serif;
 }
 
+/* BODY */
 body {
-    background-color: #1b2838;
-    color: rgb(162, 201, 212);
+    background: linear-gradient(180deg, var(--bg), var(--bg-dark));
+    color: var(--text);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-.container {
-    width: 420px;
-    background-color: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    padding: 30px 40px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
+/* LOGO */
+.imgLogo {
+    position: fixed;
+    width: 320px;
+    top: 40px;
+    opacity: 0.8;
+    transition: 0.3s;
 }
 
-.cadastro-text {
-    font-size: 36px;
+.imgLogo:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* CONTAINER */
+.container {
+    width: 420px;
+    background: rgba(27, 40, 56, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+    backdrop-filter: blur(8px);
+
+    animation: fadeIn 0.6s ease;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TÍTULO */
+.container h1 {
+    font-size: 32px;
     text-align: center;
 }
 
+/* INPUT */
 .input-box {
     position: relative;
     width: 100%;
     height: 50px;
-    margin: 30px 0;
+    margin: 25px 0;
 }
 
 .input-box input {
     width: 100%;
     height: 100%;
-    background-color: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
     border-radius: 40px;
     outline: none;
-    font-size: 16px;
-    color: rgb(162, 201, 212);
+    font-size: 15px;
+    color: var(--text);
     padding: 20px 45px 20px 20px;
+    transition: 0.2s;
+}
+
+.input-box input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(56, 210, 248, 0.4);
 }
 
 .input-box input::placeholder {
-    color: #c5c5c5;
+    color: var(--text-muted);
 }
 
 .input-box i {
     position: absolute;
     right: 20px;
-    font-size: 20px;
     top: 50%;
     transform: translateY(-50%);
+    color: var(--text-muted);
 }
 
+/* LEMBRAR */
 .lembrar-esqueci {
     display: flex;
     justify-content: space-between;
-    margin: -15px 0 15px;
+    font-size: 14px;
+    margin: -10px 0 15px;
 }
 
 .lembrar-esqueci a {
+    color: var(--text);
     text-decoration: none;
-    color: rgb(162, 201, 212);
 }
 
-.lembrar-esqueci a {
-    text-decoration: none;
-
+.lembrar-esqueci a:hover {
+    color: var(--accent);
 }
 
-.cadastro {
+/* BOTÃO */
+.container-botao {
+    display: flex;
+}
+
+.login {
     width: 100%;
     height: 50px;
-    background-color: rgb(162, 201, 212);
-    border: none;
+    background: var(--accent);
     border-radius: 40px;
-    cursor: pointer;
-    font-size: 18px;
-    color: #1b2838;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--bg);
     font-weight: 600;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-    margin: 0 0 20px;
+    text-decoration: none;
+
+    transition: 0.3s;
 }
 
-.cadastro:hover {
-    background-color: #1b2838;
-    color: rgb(162, 201, 212);
-    border: 2px solid;
+.login:hover {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
 }
 
+/* REGISTRO */
+.registra-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.registra-link a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.registra-link a:hover {
+    text-decoration: underline;
+}
+
+/* BOTÃO FLUTUANTE */
 .Btn {
     position: fixed;
     bottom: 30px;
+    left: 30px;
+
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+
     width: 45px;
     height: 45px;
-    border: none;
+
     border-radius: 50%;
-    cursor: pointer;
     overflow: hidden;
-    transition-duration: .3s;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
-    background-color: #273850;
+
+    background-color: var(--bg-light);
+    transition: 0.3s;
 }
 
 .sign {
     width: 100%;
-    transition-duration: .3s;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .sign svg {
@@ -132,58 +209,39 @@ body {
 
 .text {
     position: absolute;
-    right: 0%;
-    width: 0%;
+    right: 0;
+    width: 0;
     opacity: 0;
     color: white;
-    font-size: 1.2em;
-    font-weight: 600;
-    transition-duration: .3s;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
+/* HOVER */
 .Btn:hover {
-    width: 125px;
+    width: 130px;
     border-radius: 40px;
-    transition-duration: .3s;
 }
 
 .Btn:hover .sign {
     width: 30%;
-    transition-duration: .3s;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .Btn:hover .text {
     opacity: 1;
     width: 70%;
-    transition-duration: .3s;
     padding-right: 10px;
 }
 
-.Btn:active {
-    transform: translate(2px, 2px);
-}
+/* RESPONSIVO */
+@media(max-width:480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
 
-.container-botao{
-        margin: 1rem 0 1rem 4.5em;
+    .imgLogo {
+        width: 200px;
     }
-    .botao{
-        width: 100%;
-        height: 60px;
-        padding: 10px 50px;
-        background-color: rgb(162, 201, 212);
-        border: none;
-        border-radius: 40px;
-        cursor: pointer;
-        font-size: 19px;
-        color: #1b2838;
-        font-weight: 600;
-        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-        text-decoration: none
-    }
- 
-    .botao:hover{
-        background-color: #1b2838;
-        color: rgb(162, 201, 212);
-        border: 2px solid;
-    }
+}
