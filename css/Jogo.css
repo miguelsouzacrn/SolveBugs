@@ -22,6 +22,40 @@ body {
     z-index: -1;
 }
 
+.fundoimg1 {
+    position: fixed;
+    width: 100%;
+    height: 100dvh;
+    top: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    background-image: url(../img/hytale\ chat.jpg);
+}
+
+.fundoimg2 {
+    position: fixed;
+    width: 100%;
+    height: 100dvh;
+    top: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    background-image: url(../img/fc26chat.webp);
+}
+
+.fundoimg3 {
+    position: fixed;
+    width: 100%;
+    height: 100dvh;
+    top: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    background-image: url(../img/residentchat.avif);
+}
+
+
 .containerjogo {
     min-height: 100vh;
     width: 73%;
