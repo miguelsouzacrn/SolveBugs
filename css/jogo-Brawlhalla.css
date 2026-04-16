@@ -17,44 +17,10 @@ body {
     width: 100%;
     height: 100dvh;
     top: 0;
-    background-image: url("https://image.api.playstation.com/vulcan/img/rnd/202106/1418/tnF6zleKF1aDqp1udCTwy9EQ.jpg");
+    background-image: url("https://images.ctfassets.net/pc3i4f5nnp8d/7FukNWz1Dksq5OafQq7sMy/39c7f2ef8895e60e364e200ecf618ac8/biborg-work-ubisoft-brawlhalla-header.jpg");
     background-size: cover;
     z-index: -1;
 }
-
-.fundoimg1 {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    top: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    background-image: url(../img/hytale\ chat.jpg);
-}
-
-.fundoimg2 {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    top: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    background-image: url(../img/fc26chat.webp);
-}
-
-.fundoimg3 {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    top: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    background-image: url(../img/residentchat.avif);
-}
-
 
 .containerjogo {
     min-height: 100vh;
