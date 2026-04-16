@@ -31,12 +31,12 @@ body {
     box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
 }
 
-    .comentario {
+.comentario {
       background-color: rgb(39, 57, 80);
       padding: 8px;
       margin-bottom: 5px;
       border-radius: 5px;
-    }
+}
 
 .logo-container {
     margin: 0% 25%;
@@ -91,7 +91,18 @@ body {
     transform: translateY(-50%);
 }
 
-@media(max-width:780px){
+@media(max-width:480px){
+
+#comentarios {
+    margin: 6% 3% 0;
+    border-radius: 5px;
+    border: 1px solid rgb(36, 53, 75);
+    flex: 1;
+    overflow-y: auto;
+    min-height: 630px !important;
+    background-color: rgba(20, 29, 41, 1);
+}
+
 .barra-comentario {
     width: 100%;
     background-color: rgb(31, 46, 65);
@@ -129,8 +140,7 @@ input {
     padding: 8px 14px;
     background: rgb(162, 201, 212);
     border: none;
-    color: rgb(27, 40, 56);
-    border-radius: 100px !important;
+    color: rgb(27, 40, 56);;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -142,10 +152,6 @@ input {
     color: rgb(162, 201, 212);
 }
 
-.close-btn{
-    border-radius: 50px !important;
-    
-}
 
 }
 
@@ -198,22 +204,62 @@ input{
     color: rgb(21, 32, 44);
 }
 
-.close-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px; /* 👈 mudou aqui */
-    background: #B82C46;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    z-index: 1000;
-    transition: 0.3s;
+.text {
+  position: absolute;
+  right: 0;
+  width: 0;
+  opacity: 0;
+  color: white;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
-.close-btn:hover{
-        background: #dd3453;
+.Btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+
+  display: flex;
+  align-items: center;
+
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  background-color: rgb(39, 57, 80);
+  transition: 0.3s;
+}
+
+.sign {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+.Btn:hover {
+  width: 90px;
+  border-radius: 40px;
+  background-color: #B82c46;  
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  padding-left: 10px;
+}
+
+.Btn:hover .text {
+  opacity: 1;
+  width: 60%;
+  padding-right: 10px;
 }
