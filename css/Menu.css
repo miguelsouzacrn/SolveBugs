@@ -68,13 +68,16 @@
 
     }
 
-   .carousel-caption {
-    bottom: 10px; /* Reduz a altura no mobile */
-    padding: 0;
-  }
-  .carousel-caption h5 {
-    font-size: 14px; /* Diminui o título */
-  }
+    .carousel-caption {
+        bottom: 10px;
+        /* Reduz a altura no mobile */
+        padding: 0;
+    }
+
+    .carousel-caption h5 {
+        font-size: 14px;
+        /* Diminui o título */
+    }
 }
 
 body {
@@ -152,15 +155,16 @@ body {
     background-color: #151f2c;
     margin-top: 10vh;
     padding: 1vh;
+    font-size: 20px;
+    font-weight: 450;
 }
 
 .container-lista {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 100px;
     flex-wrap: wrap;
     padding: 20px;
-
 }
 
 
@@ -168,18 +172,23 @@ body {
     width: 100px;
     border-right: 1px solid transparent;
     padding: 0 30vh 0 10vh;
-
+    font-size: large;
+    font-weight: 600;
 }
 
 .lista2 {
     width: 100px;
     border-right: 1px solid transparent;
     padding: 0 30vh 0 10vh;
+    font-size: large;
+    font-weight: 600;
 }
 
 .lista3 {
     width: 100px;
     padding: 0 30vh 0 10vh;
+    font-size: large;
+    font-weight: 600;
 }
 
 ul {
@@ -189,13 +198,14 @@ ul {
 }
 
 li {
-    margin: 10px 0;
+    margin: 15px 0;
+
 }
 
 a {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 15px;
     background-color: #1b2838;
     padding: 10px;
     padding-right: 20px;
@@ -211,13 +221,14 @@ a:hover {
 }
 
 .img {
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
     border-radius: 4px;
 }
 
-.lista {
-    width: 250px;
+.conteiner-lista {
+    width: 400px;
+
 }
 
 .menu {
@@ -276,7 +287,7 @@ a:hover {
 
 .close-btn {
     margin-top: 60px;
-    background-color: #dc3545;
+    background-color: #b82c46;
     width: 100px;
     height: 50px;
 }
@@ -298,11 +309,19 @@ button {
 }
 
 .linha a {
-    padding-right: 200px;
+    padding-right: 215px;
 }
 
 .carousel-caption {
     background: rgba(0, 0, 0, 0.5);
     padding: 2vh;
     border-radius: 8px;
+}
+
+.icone-rodape{
+   fill: rgb(131, 214, 236);
+
+}
+.icone-rodape a{
+    padding-right: 10px;
 }
