@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo - ARK</title>
+
+    <link rel="stylesheet" href="./css/Jogo.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .topo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .icone {
+            font-size: 18px;
+        }
+
+        .nome {
+            font-weight: bold;
+        }
+
+        .acoes {
+            margin-top: 4px;
+        }
+
+        .topo {
+            margin-bottom: 5px;
+        }
+
+        .acoes button {
+            margin: 4px;
+            padding: 0 3px;
+            border: 2px solid;
+            background-color: rgba(8, 82, 82, 0.2);
+            color: rgb(135, 162, 167);
+        }
+
+        .acoes button:hover {
+            background-color: rgba(2, 29, 29, 0.2);
+            color: rgb(162, 201, 212);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <a href="./index.html" class="Btn">
+        <div class="sign">
+            <svg viewBox="0 0 512 512">
+                <path
+                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                </path>
+            </svg>
+        </div>
+        <div class="text">Voltar</div>
+    </a>
+
+    <div class="fundoimg1"></div>
+
+    <main class="containerjogo">
+
+        <div class="logo-container">
+            <img src="" alt="">
+        </div>
+
+        <div class="linha-divisoria">
+            <div class="input-box">
+                <input placeholder="Pesquisar" type="text">
+            </div>
+        </div>
+
+        <div id="comentarios"></div>
+
+        <div class="barra-comentario">
+            <div class="input-area">
+                <input type="text" id="inputComentario" placeholder="De sua solução...">
+                <button class="btnEnviar" id="btnEnviar">Enviar</button>
+            </div>
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+        function criarComentario(texto) {
+
+            let comentario = document.createElement("div");
+            comentario.classList.add("comentario");
+
+            let topo = document.createElement("div");
+            topo.classList.add("topo");
+
+            topo.onclick = function () {
+                window.location.href = "Usuario.html";
+            };
+
+            let icone = document.createElement("i");
+            icone.classList.add("fa-solid", "fa-user", "icone");
+
+            let nome = document.createElement("span");
+            nome.classList.add("nome");
+            nome.textContent = "User";
+
+            topo.appendChild(icone);
+            topo.appendChild(nome);
+
+            let textoComentario = document.createElement("p");
+            textoComentario.textContent = texto;
+
+            let acoes = document.createElement("div");
+            acoes.classList.add("acoes");
+
+            let like = document.createElement("button");
+            let dislike = document.createElement("button");
+
+            let countLike = 0;
+            let countDislike = 0;
+
+            let liked = false;
+            let disliked = false;
+
+            like.textContent = "👍 0";
+            dislike.textContent = "👎 0";
+
+            like.onclick = function () {
+                if (!liked) {
+                    countLike++;
+                    liked = true;
+                    like.classList.add("ativo");
+
+                    if (disliked) {
+                        countDislike--;
+                        disliked = false;
+                        dislike.classList.remove("ativo");
+                    }
+                } else {
+                    countLike--;
+                    liked = false;
+                    like.classList.remove("ativo");
+                }
+
+                like.textContent = "👍 " + countLike;
+                dislike.textContent = "👎 " + countDislike;
+            };
+
+            dislike.onclick = function () {
+                if (!disliked) {
+                    countDislike++;
+                    disliked = true;
+                    dislike.classList.add("ativo");
+
+                    if (liked) {
+                        countLike--;
+                        liked = false;
+                        like.classList.remove("ativo");
+                    }
+                } else {
+                    countDislike--;
+                    disliked = false;
+                    dislike.classList.remove("ativo");
+                }
+
+                like.textContent = "👍 " + countLike;
+                dislike.textContent = "👎 " + countDislike;
+            };
+
+            acoes.appendChild(like);
+            acoes.appendChild(dislike);
+
+            comentario.appendChild(topo);
+            comentario.appendChild(textoComentario);
+            comentario.appendChild(acoes);
+
+            return comentario;
+        }
+
+
+        function adicionarComentario() {
+            let input = document.getElementById("inputComentario");
+            let texto = input.value;
+
+            if (texto.trim() === "") return;
+
+            let comentarioPronto = criarComentario(texto);
+
+            document.getElementById("comentarios").appendChild(comentarioPronto);
+
+            input.value = "";
+        }
+
+        document
+            .getElementById("btnEnviar")
+            .addEventListener("click", adicionarComentario);
+
+        document
+            .getElementById("inputComentario")
+            .addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // evita bugs futuros
+                    adicionarComentario();
+                }
+            });
+
+    </script>
+
+</body>
+
+</html>
