@@ -263,3 +263,34 @@ input{
   width: 60%;
   padding-right: 10px;
 }
+
+.comentario {
+    position: relative;
+    background-color: rgb(39, 57, 80);
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+
+.comentario::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: rgba(162, 201, 212, 0.3);
+}
+
+.acoes button:nth-child(3),
+.acoes button:nth-child(4) {
+    border: none;
+    background: transparent;
+}
+
+.btn-responder,
+.btn-toggle {
+    border: none !important;
+    background: transparent !important;
+}
