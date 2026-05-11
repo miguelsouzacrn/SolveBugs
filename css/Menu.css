@@ -69,13 +69,13 @@
     }
 
     .carousel-caption {
-        bottom: 10px;
+        bottom: 10px !important;
         /* Reduz a altura no mobile */
-        padding: 0;
+        padding-bottom: 10px !important;
     }
 
     .carousel-caption h5 {
-        font-size: 14px;
+        font-size: 14px !important;
         /* Diminui o título */
     }
 }
