@@ -12,9 +12,7 @@ body {
     min-height: 100vh;
 }
 
-
-
-.fundoimg1 {
+.fundoimg {
     position: fixed;
     width: 100%;
     height: 100dvh;
@@ -22,29 +20,7 @@ body {
     background-size: cover;
     background-position: center;
     z-index: -1;
-    background-image: url(https://images8.alphacoders.com/106/thumb-1920-1061237.jpg);
-}
-
-.fundoimg2 {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    top: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    background-image: url(../img/fc26chat.webp);
-}
-
-.fundoimg3 {
-    position: fixed;
-    width: 100%;
-    height: 100dvh;
-    top: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    background-image: url(../img/residentchat.avif);
+    background-image: url(https://image.api.playstation.com/vulcan/ap/rnd/202507/1617/4690dfbefe31f3b68c0a44788d92e5b203920641d90c46ec.jpg?w=1920&thumb=false);
 }
 
 
@@ -67,14 +43,16 @@ body {
 .logo-container {
     margin: 0% 25%;
     height: 100px;
-
 }
 
 .logo-container img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    border-radius: 8px;
+
 }
+
 
 .linha-divisoria {
     margin-top: 3%;
