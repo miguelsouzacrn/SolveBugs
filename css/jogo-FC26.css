@@ -45,12 +45,15 @@ body {
     height: 100px;
 }
 
-.logo-container img {
-    width: 100%;
+.logo-container img{
+    
     height: 100%;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 10px;
+}
 
+img {
+    border-radius: 10px;
 }
 
 
