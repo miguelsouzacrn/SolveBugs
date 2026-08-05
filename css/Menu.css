@@ -51,16 +51,6 @@
     }
 
 
-    .carousel-inner {
-        width: 100%;
-        height: 400px;
-    }
-
-    .carousel img {
-        background-position: center;
-        background-size: cover;
-    }
-
     .titulo {
         margin-top: 225px !important;
         padding-left: 20px;
@@ -68,15 +58,9 @@
 
     }
 
-    .carousel-caption {
-        bottom: 10px !important;
-        /* Reduz a altura no mobile */
-        padding-bottom: 10px !important;
-    }
-
-    .carousel-caption h5 {
-        font-size: 14px !important;
-        /* Diminui o título */
+    .carousel{
+        margin-top:20px;
+        border-radius:0px !important;
     }
 }
 
@@ -118,16 +102,38 @@ body {
 
 }
 
-.carousel {
-    margin-top: 120px;
+.carousel{
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
 }
 
-.carousel img {
-    width: 100%;
-    height: 60vh;
-    object-fit: cover;
-    object-position: center;
+.carousel-item img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
 }
+
+.carousel-control-prev,
+.carousel-control-next{
+    width:8%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+    background-size:70%;
+}
+
+.carousel-indicators button{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+}
+
+
 
 .navbar {
     position: fixed;
