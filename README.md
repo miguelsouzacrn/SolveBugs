@@ -1,2 +1,2 @@
 # SolveBugs
-Site destinado a ajudar jogadores necessitados ;)
+Site destinado a ajudar jogadores necessitados

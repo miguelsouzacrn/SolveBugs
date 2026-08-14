@@ -1,3 +1,12 @@
 <?php
 
-$conn = new mysqli("localhost","root","","solvebugs_db");
+
+
+$conn = new mysqli("localhost","root","","solvebugs");
+
+
+if($conn){
+    echo"ok";
+}
+
+?>
