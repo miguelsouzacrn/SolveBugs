@@ -90,6 +90,7 @@ if (isset($_POST["acao"]) && $_POST["acao"] === "comentar") {
 
     $usuario_id = intval($_SESSION["usuario_id"]);
 
+
     $texto = trim($_POST["comentario"] ?? "");
 
     $comentario_pai_id = null;
