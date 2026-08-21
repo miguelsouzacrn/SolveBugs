@@ -1,6 +1,17 @@
 <?php
 
 // ==========================================
+// AUTENTICAÇÃO
+// ==========================================
+
+require_once __DIR__ . "/config/auth.php";
+
+
+// Verifica se o usuário está logado
+$estaLogado = isset($_SESSION["usuario_id"]);
+
+
+// ==========================================
 // CONEXÃO COM O BANCO
 // ==========================================
 
@@ -21,6 +32,70 @@ if ($conn->connect_error) {
 }
 
 $conn->set_charset("utf8mb4");
+
+
+// ==========================================
+// FOTO PADRÃO
+// ==========================================
+
+$fotoPerfil = "./img/perfilIcon.avif";
+
+
+// ==========================================
+// BUSCAR FOTO DO USUÁRIO LOGADO
+// ==========================================
+
+if ($estaLogado) {
+
+    $idUsuario = $_SESSION["usuario_id"];
+
+
+    $sqlUsuario = "
+        SELECT foto_perfil
+        FROM usuarios
+        WHERE id = ?
+    ";
+
+
+    $stmtUsuario = $conn->prepare($sqlUsuario);
+
+
+    if ($stmtUsuario) {
+
+        $stmtUsuario->bind_param(
+            "i",
+            $idUsuario
+        );
+
+
+        $stmtUsuario->execute();
+
+
+        $resultadoUsuario =
+            $stmtUsuario->get_result();
+
+
+        $dadosUsuario =
+            $resultadoUsuario->fetch_assoc();
+
+
+        // Se existir foto cadastrada
+        if (
+            $dadosUsuario &&
+            !empty($dadosUsuario["foto_perfil"])
+        ) {
+
+            $fotoPerfil =
+                $dadosUsuario["foto_perfil"];
+
+        }
+
+
+        $stmtUsuario->close();
+
+    }
+
+}
 
 
 // ==========================================
@@ -58,12 +133,6 @@ $maisComentados =
 // ==========================================
 // MAIS PESQUISADOS
 // ==========================================
-//
-// Como ainda não temos uma tabela específica
-// para pesquisas, vamos usar os jogos mais
-// recentes como exemplo.
-// Depois podemos criar um sistema de pesquisas.
-//
 
 $sqlMaisPesquisados = "
     SELECT
@@ -131,6 +200,7 @@ $jogosNovos =
 
 ?>
 
+
 <!DOCTYPE html>
 
 <html lang="pt-br">
@@ -143,18 +213,23 @@ $jogosNovos =
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>
-        SolveBugs
-    </title>
+    <title>SolveBugs</title>
 
 
     <!-- BOOTSTRAP -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet">
-    <link rel="icon"href="./img/favicon.ico">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <link
+        rel="icon"
+        href="./img/favicon.ico">
 
 
     <style>
+
         /* =====================================
            RESET
         ===================================== */
@@ -201,9 +276,11 @@ $jogosNovos =
             background-image:
                 url('./img/background.png');
 
-            background-size: cover;
+            background-size:
+                cover;
 
-            background-position: center;
+            background-position:
+                center;
 
             z-index: -2;
 
@@ -238,7 +315,8 @@ $jogosNovos =
 
         .menu {
 
-            min-height: 85px;
+            min-height:
+                85px;
 
             padding:
                 5px 3%;
@@ -248,22 +326,28 @@ $jogosNovos =
 
         .logo {
 
-            width: 230px;
+            width:
+                230px;
 
-            height: 75px;
+            height:
+                75px;
 
-            object-fit: contain;
+            object-fit:
+                contain;
 
         }
 
 
         .acoes-direita {
 
-            display: flex;
+            display:
+                flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 15px;
+            gap:
+                15px;
 
         }
 
@@ -274,16 +358,19 @@ $jogosNovos =
 
         .barraPesquisa {
 
-            width: 300px;
+            width:
+                300px;
 
         }
 
 
         .input-pesquisa {
 
-            width: 100%;
+            width:
+                100%;
 
-            height: 40px;
+            height:
+                40px;
 
             padding:
                 0 18px;
@@ -291,9 +378,11 @@ $jogosNovos =
             border:
                 2px solid rgba(255, 255, 255, .15);
 
-            border-radius: 30px;
+            border-radius:
+                30px;
 
-            outline: none;
+            outline:
+                none;
 
             background:
                 transparent;
@@ -326,31 +415,63 @@ $jogosNovos =
 
         .butPerfil {
 
-            width: 45px;
+            width:
+                45px;
 
-            height: 45px;
+            height:
+                45px;
 
-            border: none;
+            border:
+                none;
 
-            border-radius: 50%;
+            border-radius:
+                50%;
 
             background:
                 rgb(39, 57, 80);
 
-            cursor: pointer;
+            cursor:
+                pointer;
 
-            overflow: hidden;
+            overflow:
+                hidden;
+
+            display:
+                block;
+
+            padding:
+                0;
+
+            text-decoration:
+                none;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .butPerfil:hover {
+
+            opacity:
+                .85;
 
         }
 
 
         .imgBut {
 
-            width: 100%;
+            width:
+                100%;
 
-            height: 100%;
+            height:
+                100%;
 
-            object-fit: cover;
+            object-fit:
+                cover;
+
+            display:
+                block;
 
         }
 
@@ -361,33 +482,43 @@ $jogosNovos =
 
         .overlay {
 
-            display: none;
+            display:
+                none;
 
-            position: fixed;
+            position:
+                fixed;
 
-            inset: 0;
+            inset:
+                0;
 
             background:
                 rgba(0, 0, 0, .65);
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            align-items: center;
+            align-items:
+                center;
 
-            z-index: 100;
+            z-index:
+                100;
 
         }
 
 
         .popupPerfil {
 
-            width: 300px;
+            width:
+                300px;
 
-            padding: 25px;
+            padding:
+                25px;
 
-            text-align: center;
+            text-align:
+                center;
 
-            border-radius: 8px;
+            border-radius:
+                8px;
 
             background:
                 rgb(27, 40, 56);
@@ -400,47 +531,61 @@ $jogosNovos =
 
         .imgPerfil {
 
-            width: 90px;
+            width:
+                90px;
 
-            height: 90px;
+            height:
+                90px;
 
-            border-radius: 50%;
+            border-radius:
+                50%;
 
-            margin: 15px;
+            margin:
+                15px;
+
+            object-fit:
+                cover;
 
         }
 
 
         .popupPerfil ul {
 
-            list-style: none;
+            list-style:
+                none;
 
-            padding: 0;
+            padding:
+                0;
 
         }
 
 
         .popupPerfil li {
 
-            margin: 10px;
+            margin:
+                10px;
 
         }
 
 
         .popupPerfil a {
 
-            text-decoration: none;
+            text-decoration:
+                none;
 
         }
 
 
         .close-btn {
 
-            border: none;
+            border:
+                none;
 
-            padding: 8px 20px;
+            padding:
+                8px 20px;
 
-            border-radius: 5px;
+            border-radius:
+                5px;
 
             background:
                 rgb(162, 201, 212);
@@ -448,7 +593,16 @@ $jogosNovos =
             color:
                 rgb(27, 40, 56);
 
-            cursor: pointer;
+            cursor:
+                pointer;
+
+        }
+
+
+        .close-btn:hover {
+
+            opacity:
+                .85;
 
         }
 
@@ -459,27 +613,33 @@ $jogosNovos =
 
         .conteudo {
 
-            width: 90%;
+            width:
+                90%;
 
-            max-width: 1250px;
+            max-width:
+                1250px;
 
-            margin: auto;
+            margin:
+                auto;
 
         }
 
 
         .titulo {
 
-            margin-top: 40px;
+            margin-top:
+                40px;
 
-            margin-bottom: 20px;
+            margin-bottom:
+                20px;
 
         }
 
 
         .titulo h1 {
 
-            font-size: 30px;
+            font-size:
+                30px;
 
         }
 
@@ -490,9 +650,11 @@ $jogosNovos =
 
         .carousel {
 
-            border-radius: 8px;
+            border-radius:
+                8px;
 
-            overflow: hidden;
+            overflow:
+                hidden;
 
             box-shadow:
                 0 5px 20px rgba(0, 0, 0, .5);
@@ -502,7 +664,8 @@ $jogosNovos =
 
         .carousel-item {
 
-            height: 450px;
+            height:
+                450px;
 
             background:
                 rgb(27, 40, 56);
@@ -512,44 +675,56 @@ $jogosNovos =
 
         .carousel-item img {
 
-            width: 100%;
+            width:
+                100%;
 
-            height: 100%;
+            height:
+                100%;
 
-            object-fit: cover;
+            object-fit:
+                cover;
 
         }
 
 
         .carousel-item::after {
 
-            content: "";
+            content:
+                "";
 
-            position: absolute;
+            position:
+                absolute;
 
-            inset: 0;
+            inset:
+                0;
 
             background:
-                linear-gradient(transparent 35%,
-                    rgba(0, 0, 0, .85));
+                linear-gradient(
+                    transparent 35%,
+                    rgba(0, 0, 0, .85)
+                );
 
         }
 
 
         .carousel-caption {
 
-            z-index: 2;
+            z-index:
+                2;
 
-            text-align: left;
+            text-align:
+                left;
 
-            left: 5%;
+            left:
+                5%;
 
         }
 
 
         .carousel-caption h2 {
 
-            font-size: 32px;
+            font-size:
+                32px;
 
         }
 
@@ -560,14 +735,17 @@ $jogosNovos =
 
         .container-lista {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
                 repeat(3, 1fr);
 
-            gap: 20px;
+            gap:
+                20px;
 
-            margin-top: 35px;
+            margin-top:
+                35px;
 
         }
 
@@ -580,53 +758,64 @@ $jogosNovos =
             border:
                 1px solid rgb(36, 53, 75);
 
-            border-radius: 6px;
+            border-radius:
+                6px;
 
-            padding: 20px;
+            padding:
+                20px;
 
         }
 
 
         .lista h3 {
 
-            margin-bottom: 15px;
+            margin-bottom:
+                15px;
 
         }
 
 
         .lista ul {
 
-            list-style: none;
+            list-style:
+                none;
 
-            padding: 0;
+            padding:
+                0;
 
         }
 
 
         .linha {
 
-            margin-bottom: 8px;
+            margin-bottom:
+                8px;
 
         }
 
 
         .linha a {
 
-            display: flex;
+            display:
+                flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 10px;
+            gap:
+                10px;
 
-            padding: 8px;
+            padding:
+                8px;
 
-            text-decoration: none;
+            text-decoration:
+                none;
 
-            border-radius: 5px;
+            border-radius:
+                5px;
 
-            transition: .2s;
-
-            color: #a2c9d4;
+            transition:
+                .2s;
 
         }
 
@@ -641,13 +830,17 @@ $jogosNovos =
 
         .img {
 
-            width: 70px;
+            width:
+                45px;
 
-            height: 70px;
+            height:
+                45px;
 
-            object-fit: cover;
+            object-fit:
+                cover;
 
-            border-radius: 5px;
+            border-radius:
+                5px;
 
         }
 
@@ -658,9 +851,11 @@ $jogosNovos =
 
         .sobre {
 
-            margin-top: 40px;
+            margin-top:
+                40px;
 
-            padding: 30px;
+            padding:
+                30px;
 
             background:
                 rgba(27, 40, 56, .9);
@@ -668,16 +863,19 @@ $jogosNovos =
             border:
                 1px solid rgb(36, 53, 75);
 
-            border-radius: 6px;
+            border-radius:
+                6px;
 
-            line-height: 1.7;
+            line-height:
+                1.7;
 
         }
 
 
         .sobre h2 {
 
-            margin-bottom: 15px;
+            margin-bottom:
+                15px;
 
         }
 
@@ -688,7 +886,8 @@ $jogosNovos =
 
         .rodape {
 
-            margin-top: 60px;
+            margin-top:
+                60px;
 
             background:
                 rgb(20, 29, 41);
@@ -704,45 +903,41 @@ $jogosNovos =
 
         .footer-content {
 
-            display: flex;
+            display:
+                flex;
 
             justify-content:
                 space-between;
 
-            align-items: center;
+            align-items:
+                center;
 
         }
 
 
         .icones {
 
-            display: flex;
+            display:
+                flex;
 
-            gap: 15px;
+            gap:
+                15px;
 
         }
 
 
         .icones a {
 
-            text-decoration: none;
+            text-decoration:
+                none;
 
         }
 
 
-        .icones svg {
+        .icones a:hover {
 
-            fill:
-                rgb(162, 201, 212);
-
-            transition: .2s;
-
-        }
-
-
-        .icones svg:hover {
-
-            fill: white;
+            color:
+                white;
 
         }
 
@@ -755,25 +950,30 @@ $jogosNovos =
 
             .menu {
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 10px;
+                gap:
+                    10px;
 
             }
 
 
             .acoes-direita {
 
-                width: 100%;
+                width:
+                    100%;
 
-                justify-content: center;
+                justify-content:
+                    center;
 
             }
 
 
             .barraPesquisa {
 
-                width: 60%;
+                width:
+                    60%;
 
             }
 
@@ -788,7 +988,8 @@ $jogosNovos =
 
             .carousel-item {
 
-                height: 350px;
+                height:
+                    350px;
 
             }
 
@@ -799,50 +1000,59 @@ $jogosNovos =
 
             .conteudo {
 
-                width: 94%;
+                width:
+                    94%;
 
             }
 
 
             .logo {
 
-                width: 190px;
+                width:
+                    190px;
 
             }
 
 
             .barraPesquisa {
 
-                width: 100%;
+                width:
+                    100%;
 
             }
 
 
             .carousel-item {
 
-                height: 250px;
+                height:
+                    250px;
 
             }
 
 
             .carousel-caption h2 {
 
-                font-size: 22px;
+                font-size:
+                    22px;
 
             }
 
 
             .footer-content {
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 20px;
+                gap:
+                    20px;
 
-                text-align: center;
+                text-align:
+                    center;
 
             }
 
         }
+
     </style>
 
 </head>
@@ -851,20 +1061,29 @@ $jogosNovos =
 <body>
 
 
+    <!-- FUNDO -->
+
     <div class="fundo"></div>
 
 
     <!-- =====================================
-     NAVBAR
-===================================== -->
+         NAVBAR
+    ===================================== -->
 
     <nav class="navbar navbar-dark">
 
-        <div
-            class="menu container-fluid
-        d-flex justify-content-between
-        align-items-center">
 
+        <div
+            class="
+                menu
+                container-fluid
+                d-flex
+                justify-content-between
+                align-items-center
+            ">
+
+
+            <!-- LOGO -->
 
             <a href="index.php">
 
@@ -879,10 +1098,13 @@ $jogosNovos =
             <div class="acoes-direita">
 
 
+                <!-- PESQUISA -->
+
                 <form
                     action="jogos.php"
                     method="GET"
                     class="barraPesquisa">
+
 
                     <input
                         class="input-pesquisa"
@@ -890,19 +1112,56 @@ $jogosNovos =
                         name="busca"
                         placeholder="Buscar jogo...">
 
+
                 </form>
 
 
-                <button
-                    class="butPerfil"
-                    onclick="abrirPopup()">
+                <!-- =====================================
+                     PERFIL
+                ====================================== -->
 
-                    <img
-                        class="imgBut"
-                        src="./img/perfil.png"
-                        alt="Perfil">
+                <?php if ($estaLogado): ?>
 
-                </button>
+
+                    <!-- USUÁRIO LOGADO -->
+
+                    <a
+                        href="Usuario.php"
+                        class="butPerfil"
+                        title="Minha conta">
+
+
+                        <img
+                            class="imgBut"
+                            src="<?= htmlspecialchars($fotoPerfil) ?>"
+                            alt="Meu perfil">
+
+
+                    </a>
+
+
+                <?php else: ?>
+
+
+                    <!-- USUÁRIO NÃO LOGADO -->
+
+                    <button
+                        type="button"
+                        class="butPerfil"
+                        onclick="abrirPopup()"
+                        title="Entrar">
+
+
+                        <img
+                            class="imgBut"
+                            src="./img/perfilIcon.avif"
+                            alt="Perfil">
+
+
+                    </button>
+
+
+                <?php endif; ?>
 
 
             </div>
@@ -913,57 +1172,80 @@ $jogosNovos =
 
 
     <!-- =====================================
-     POPUP PERFIL
-===================================== -->
+         POPUP PERFIL
+    ===================================== -->
 
-    <div
-        class="overlay"
-        id="overlay">
-
-        <div class="popupPerfil">
-
-            <h2>
-                Usuário
-            </h2>
+    <?php if (!$estaLogado): ?>
 
 
-            <img
-                class="imgPerfil"
-                src="./img/perfil.png"
-                alt="Perfil">
+        <div
+            class="overlay"
+            id="overlay">
 
 
-            <ul>
-
-                <li>
-                    <a href="./Login.php">
-                        Login
-                    </a>
-                </li>
-
-                <li>
-                    <a href="./cadastro_usuario.php">
-                        Cadastrar-se
-                    </a>
-                </li>
-
-            </ul>
+            <div class="popupPerfil">
 
 
-            <button
-                class="close-btn"
-                onclick="fecharPopup()">
-                Fechar
-            </button>
+                <h2>
+                    Usuário
+                </h2>
+
+
+                <img
+                    class="imgPerfil"
+                    src="./img/perfilIcon.avif"
+                    alt="Perfil">
+
+
+                <ul>
+
+
+                    <li>
+
+                        <a href="./Login.php">
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <a href="./Cadastro.php">
+
+                            Cadastrar-se
+
+                        </a>
+
+                    </li>
+
+
+                </ul>
+
+
+                <button
+                    type="button"
+                    class="close-btn"
+                    onclick="fecharPopup()">
+
+                    Fechar
+
+                </button>
+
+
+            </div>
 
         </div>
 
-    </div>
+
+    <?php endif; ?>
 
 
     <!-- =====================================
-     CONTEÚDO
-===================================== -->
+         CONTEÚDO
+    ===================================== -->
 
     <main class="conteudo">
 
@@ -977,9 +1259,9 @@ $jogosNovos =
         </div>
 
 
-        <!-- =================================
-         CAROUSEL
-    ================================== -->
+        <!-- =====================================
+             CAROUSEL
+        ===================================== -->
 
         <div
             id="carouselJogos"
@@ -989,9 +1271,11 @@ $jogosNovos =
 
             <div class="carousel-indicators">
 
+
                 <?php
 
                 $contador = 0;
+
 
                 while (
                     $jogo =
@@ -1000,18 +1284,23 @@ $jogosNovos =
 
                 ?>
 
+
                     <button
                         type="button"
                         data-bs-target="#carouselJogos"
                         data-bs-slide-to="<?= $contador ?>"
-                        class="<?= $contador == 0 ? 'active' : '' ?>"></button>
+                        class="<?= $contador == 0 ? 'active' : '' ?>">
+                    </button>
+
 
                 <?php
 
                     $contador++;
+
                 }
 
                 ?>
+
 
             </div>
 
@@ -1025,6 +1314,7 @@ $jogosNovos =
 
                 $contador = 0;
 
+
                 while (
                     $jogo =
                     $maisComentados->fetch_assoc()
@@ -1034,32 +1324,25 @@ $jogosNovos =
 
 
                     <div
-                        class="carousel-item
-                    <?= $contador == 0 ? 'active' : '' ?>">
+                        class="
+                            carousel-item
+                            <?= $contador == 0 ? 'active' : '' ?>
+                        ">
 
 
-                        <?php
+                        <?php if (!empty($jogo["banner"])): ?>
 
-                        if (!empty($jogo["banner"])) {
-
-                        ?>
 
                             <img
-                                src="<?= htmlspecialchars(
-                                            $jogo["banner"]
-                                        ) ?>"
-                                alt="<?= htmlspecialchars(
-                                            $jogo["nome"]
-                                        ) ?>">
+                                src="<?= htmlspecialchars($jogo["banner"]) ?>"
+                                alt="<?= htmlspecialchars($jogo["nome"]) ?>">
 
-                        <?php
 
-                        }
-
-                        ?>
+                        <?php endif; ?>
 
 
                         <div class="carousel-caption">
+
 
                             <h2>
 
@@ -1069,13 +1352,17 @@ $jogosNovos =
 
                             </h2>
 
+
                             <p>
 
-                                <?= $jogo["quantidade_comentarios"] ?>
+                                <?= $jogo[
+                                    "quantidade_comentarios"
+                                ] ?>
 
                                 comentários
 
                             </p>
+
 
                         </div>
 
@@ -1086,6 +1373,7 @@ $jogosNovos =
                 <?php
 
                     $contador++;
+
                 }
 
                 ?>
@@ -1100,8 +1388,11 @@ $jogosNovos =
                 data-bs-target="#carouselJogos"
                 data-bs-slide="prev">
 
+
                 <span
-                    class="carousel-control-prev-icon"></span>
+                    class="carousel-control-prev-icon">
+                </span>
+
 
             </button>
 
@@ -1112,8 +1403,11 @@ $jogosNovos =
                 data-bs-target="#carouselJogos"
                 data-bs-slide="next">
 
+
                 <span
-                    class="carousel-control-next-icon"></span>
+                    class="carousel-control-next-icon">
+                </span>
+
 
             </button>
 
@@ -1121,9 +1415,9 @@ $jogosNovos =
         </div>
 
 
-        <!-- =================================
-         LISTAS
-    ================================== -->
+        <!-- =====================================
+             LISTAS
+        ===================================== -->
 
         <div class="container-lista">
 
@@ -1132,61 +1426,56 @@ $jogosNovos =
 
             <div class="lista">
 
+
                 <h3>
                     Mais pesquisados
                 </h3>
 
+
                 <ul>
 
-                    <?php
 
-                    while (
+                    <?php while (
                         $jogo =
                         $maisPesquisados->fetch_assoc()
-                    ) {
+                    ): ?>
 
-                    ?>
 
                         <li class="linha">
+
 
                             <a
                                 href="jogo.php?id=<?= $jogo["id"] ?>">
 
-                                <?php
 
-                                if (
-                                    !empty($jogo["capa"])
-                                ) {
+                                <?php if (!empty($jogo["capa"])): ?>
 
-                                ?>
 
                                     <img
                                         class="img"
-                                        src="<?= htmlspecialchars(
-                                                    $jogo["capa"]
-                                                ) ?>">
+                                        src="<?= htmlspecialchars($jogo["capa"]) ?>"
+                                        alt="<?= htmlspecialchars($jogo["nome"]) ?>">
 
-                                <?php
 
-                                }
+                                <?php endif; ?>
 
-                                ?>
 
                                 <?= htmlspecialchars(
                                     $jogo["nome"]
                                 ) ?>
 
+
                             </a>
+
 
                         </li>
 
-                    <?php
 
-                    }
+                    <?php endwhile; ?>
 
-                    ?>
 
                 </ul>
+
 
             </div>
 
@@ -1195,61 +1484,56 @@ $jogosNovos =
 
             <div class="lista">
 
+
                 <h3>
                     Recém adicionados
                 </h3>
 
+
                 <ul>
 
-                    <?php
 
-                    while (
+                    <?php while (
                         $jogo =
                         $recentes->fetch_assoc()
-                    ) {
+                    ): ?>
 
-                    ?>
 
                         <li class="linha">
+
 
                             <a
                                 href="jogo.php?id=<?= $jogo["id"] ?>">
 
-                                <?php
 
-                                if (
-                                    !empty($jogo["capa"])
-                                ) {
+                                <?php if (!empty($jogo["capa"])): ?>
 
-                                ?>
 
                                     <img
                                         class="img"
-                                        src="<?= htmlspecialchars(
-                                                    $jogo["capa"]
-                                                ) ?>">
+                                        src="<?= htmlspecialchars($jogo["capa"]) ?>"
+                                        alt="<?= htmlspecialchars($jogo["nome"]) ?>">
 
-                                <?php
 
-                                }
+                                <?php endif; ?>
 
-                                ?>
 
                                 <?= htmlspecialchars(
                                     $jogo["nome"]
                                 ) ?>
 
+
                             </a>
+
 
                         </li>
 
-                    <?php
 
-                    }
+                    <?php endwhile; ?>
 
-                    ?>
 
                 </ul>
+
 
             </div>
 
@@ -1258,61 +1542,56 @@ $jogosNovos =
 
             <div class="lista">
 
+
                 <h3>
                     Jogos novos
                 </h3>
 
+
                 <ul>
 
-                    <?php
 
-                    while (
+                    <?php while (
                         $jogo =
                         $jogosNovos->fetch_assoc()
-                    ) {
+                    ): ?>
 
-                    ?>
 
                         <li class="linha">
+
 
                             <a
                                 href="jogo.php?id=<?= $jogo["id"] ?>">
 
-                                <?php
 
-                                if (
-                                    !empty($jogo["capa"])
-                                ) {
+                                <?php if (!empty($jogo["capa"])): ?>
 
-                                ?>
 
                                     <img
                                         class="img"
-                                        src="<?= htmlspecialchars(
-                                                    $jogo["capa"]
-                                                ) ?>">
+                                        src="<?= htmlspecialchars($jogo["capa"]) ?>"
+                                        alt="<?= htmlspecialchars($jogo["nome"]) ?>">
 
-                                <?php
 
-                                }
+                                <?php endif; ?>
 
-                                ?>
 
                                 <?= htmlspecialchars(
                                     $jogo["nome"]
                                 ) ?>
 
+
                             </a>
+
 
                         </li>
 
-                    <?php
 
-                    }
+                    <?php endwhile; ?>
 
-                    ?>
 
                 </ul>
+
 
             </div>
 
@@ -1320,15 +1599,17 @@ $jogosNovos =
         </div>
 
 
-        <!-- =================================
-         SOBRE
-    ================================== -->
+        <!-- =====================================
+             SOBRE
+        ===================================== -->
 
         <section class="sobre">
+
 
             <h2>
                 Sobre o SolveBugs
             </h2>
+
 
             <p>
 
@@ -1337,6 +1618,7 @@ $jogosNovos =
                 problemas ou falhas em jogos.
 
             </p>
+
 
             <p>
 
@@ -1348,6 +1630,7 @@ $jogosNovos =
 
             </p>
 
+
         </section>
 
 
@@ -1355,10 +1638,11 @@ $jogosNovos =
 
 
     <!-- =====================================
-     FOOTER
-===================================== -->
+         FOOTER
+    ===================================== -->
 
     <footer class="rodape">
+
 
         <div class="footer-content">
 
@@ -1372,6 +1656,7 @@ $jogosNovos =
 
 
             <div class="icones">
+
 
                 <a
                     href="#"
@@ -1408,36 +1693,93 @@ $jogosNovos =
 
                 </a>
 
+
             </div>
 
 
         </div>
 
+
     </footer>
 
 
+    <!-- =====================================
+         JAVASCRIPT
+    ===================================== -->
+
     <script>
+
+
         function abrirPopup() {
 
-            document
-                .getElementById("overlay")
-                .style.display = "flex";
+            const overlay =
+                document.getElementById(
+                    "overlay"
+                );
+
+
+            if (overlay) {
+
+                overlay.style.display =
+                    "flex";
+
+            }
 
         }
 
 
         function fecharPopup() {
 
-            document
-                .getElementById("overlay")
-                .style.display = "none";
+            const overlay =
+                document.getElementById(
+                    "overlay"
+                );
+
+
+            if (overlay) {
+
+                overlay.style.display =
+                    "none";
+
+            }
 
         }
+
+
+        const overlay =
+            document.getElementById(
+                "overlay"
+            );
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        overlay
+                    ) {
+
+                        fecharPopup();
+
+                    }
+
+                }
+            );
+
+        }
+
     </script>
 
 
+    <!-- BOOTSTRAP -->
+
     <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 
 </body>
