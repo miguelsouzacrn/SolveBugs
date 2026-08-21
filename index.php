@@ -150,14 +150,8 @@ $jogosNovos =
 
     <!-- BOOTSTRAP -->
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-
-    <link
-        rel="icon"
-        href="./img/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet">
+    <link rel="icon"href="./img/favicon.ico">
 
 
     <style>
@@ -946,7 +940,7 @@ $jogosNovos =
                 </li>
 
                 <li>
-                    <a href="./Cadastro.php">
+                    <a href="./cadastro_usuario.php">
                         Cadastrar-se
                     </a>
                 </li>
