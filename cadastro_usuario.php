@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SolveBug - Cadastro</title>
-    <link rel="stylesheet" href="css/usuario.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <img class="imgLogo" src="img/9a5935eb-8429-404b-97a4-a3c728bd4573.png" alt="Logo SolveBug">
 
     <main class="container">
-        <form method="POST" action="cadastro.php" autocomplete="off">
+        <form method="POST" action="cadastro_usuario.php" autocomplete="off">
             <h1>Cadastro</h1>
 
             <?php if ($erro): ?>
