@@ -817,6 +817,8 @@ $jogosNovos =
             transition:
                 .2s;
 
+            font-size: 700;
+
         }
 
 
