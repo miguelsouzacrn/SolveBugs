@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . "/config/conexao.php";
+require_once __DIR__ . "/config/conn.php";
 
 $erro = "";
 $sucesso = "";
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SolveBug - Cadastro</title>
-    <link rel="stylesheet" href="css/usuario2.css">
+    <link rel="stylesheet" href="css/usuario.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
