@@ -626,6 +626,8 @@ $jogosNovos =
 
             transition: .2s;
 
+            color: #a2c9d4;
+
         }
 
 
@@ -639,9 +641,9 @@ $jogosNovos =
 
         .img {
 
-            width: 45px;
+            width: 70px;
 
-            height: 45px;
+            height: 70px;
 
             object-fit: cover;
 

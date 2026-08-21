@@ -456,7 +456,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             left: 0;
 
             background-image:
-                url("https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/bxSj4jO0KBqUgAbH3zuNjCje.jpg");
+                url("./img/background.png");
 
             background-size: cover;
 
