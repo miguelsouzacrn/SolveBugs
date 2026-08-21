@@ -628,6 +628,8 @@ $jogosNovos =
 
             color: #a2c9d4;
 
+            font-size: 700;
+
         }
 
 
