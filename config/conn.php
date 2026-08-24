@@ -18,6 +18,6 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    die("Erro na conexão com o banco de dados. Verifique o XAMPP/MariaDB e o arquivo config/conexao.php.");
+    die("Erro na conexão com o banco de dados. Verifique o XAMPP/MariaDB e o arquivo config/conn.php.");
 }
 ?>
