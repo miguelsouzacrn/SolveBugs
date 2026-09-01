@@ -169,6 +169,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "uploads/jogos"
         );
 
+        $background = salvarImagem(
+            $_FILES["background"],
+            "uploads/jogos"
+        );
+
 
         // ======================================
         // CADASTRAR JOGO
@@ -182,21 +187,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 banner,
                 capa,
                 logo,
+                background,
                 data_lancamento,
                 desenvolvedora_id
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ";
 
         $stmt = $conn->prepare($sql);
 
         $stmt->bind_param(
-            "ssssssi",
+            "sssssssi",
             $nome,
             $descricao,
             $banner,
             $capa,
             $logo,
+            $background,
             $dataLancamento,
             $desenvolvedoraId
         );
@@ -749,6 +756,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </div>
 
+
+            <div class="form-group">
+
+            <label>
+                Background
+            </label>
+
+            <div class="upload">
+
+                <input
+                    type="file"
+                    name="background"
+                    accept="image/*"
+                >
+
+        </div>
+
+    </div>
 
             <div class="form-group">
 

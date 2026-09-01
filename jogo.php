@@ -44,6 +44,7 @@ $stmt = $conn->prepare("
         descricao,
         capa,
         logo,
+        background,
         banner
     FROM jogos
     WHERE id = ?
@@ -569,15 +570,10 @@ $usuarioAtual =
         .fundoimg {
 
             position: fixed;
-
             inset: 0;
-
             width: 100%;
-
             height: 100vh;
-
             z-index: -2;
-
             overflow: hidden;
         }
 
@@ -1288,10 +1284,10 @@ $usuarioAtual =
 
     <div class="fundoimg">
 
-        <?php if (!empty($jogo["banner"])): ?>
+        <?php if (!empty($jogo["background"])): ?>
 
             <img
-                src="<?= htmlspecialchars($jogo["banner"]) ?>"
+                src="<?= htmlspecialchars($jogo["background"]) ?>"
                 alt=""
             >
 
