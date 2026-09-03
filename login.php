@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label>
                     <input type="checkbox" name="lembrar"> Lembrar senha
                 </label>
-                <a href="#" onclick="alert('A recuperação de senha será adicionada em breve.'); return false;">Esqueci a senha</a>
+                <a href="recuperar_senha.php">Esqueci a senha</a>
             </div>
 
             <div class="container-botao">
