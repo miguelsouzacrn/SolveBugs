@@ -1,848 +1,2328 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
-        /* =====================================
-           RESET
-        ===================================== */
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
 
-        * {
+:root {
 
-            margin: 0;
+    --bg: #101923;
+    --bg-dark: #0b1119;
+    --bg-card: #182536;
+    --bg-card-hover: #21334a;
 
-            padding: 0;
+    --text: #a2c9d4;
+    --text-white: #ffffff;
+    --text-muted: #9caab0;
 
-            box-sizing: border-box;
+    --border: rgba(162, 201, 212, .15);
 
-            color:
-                rgb(162, 201, 212);
+    --accent: #38bdf8;
+    --accent-dark: #1685b5;
 
-        }
+    --success: #2ecc71;
+    --danger: #e74c3c;
 
+    --shadow:
+        0 15px 40px rgba(0, 0, 0, .35);
 
-        body {
+}
 
-            min-height: 100vh;
 
-            background:
-                rgb(20, 29, 41);
+/* =========================================================
+   RESET
+========================================================= */
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+* {
 
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
+    font-family:
+        "Poppins",
+        sans-serif;
 
-        /* =====================================
-           FUNDO
-        ===================================== */
+}
 
-        .fundo {
 
-            position: fixed;
+html {
 
-            inset: 0;
+    scroll-behavior: smooth;
 
-            background-image:
-                url('../img/background.png');
+}
 
-            background-size:
-                cover;
 
-            background-position:
-                center;
+body {
 
-            z-index: -2;
+    min-height: 100vh;
 
-        }
+    background:
+        var(--bg-dark);
 
+    color:
+        var(--text);
 
-        .fundo::after {
+}
 
-            content: "";
 
-            position: absolute;
+body.popup-aberto {
 
-            inset: 0;
+    overflow: hidden;
 
-        }
+}
 
 
-        /* =====================================
-           NAVBAR
-        ===================================== */
+a {
 
-        .navbar {
+    text-decoration: none;
 
-            background:
-                rgba(20, 29, 41, .95);
+    color: inherit;
 
-            border-bottom:
-                1px solid rgb(39, 57, 80);
+}
 
-        }
 
+button,
+input {
 
-        .menu {
+    font-family:
+        "Poppins",
+        sans-serif;
 
-            min-height:
-                85px;
+}
 
-            padding:
-                5px 3%;
 
-        }
+/* =========================================================
+   FUNDO
+========================================================= */
 
+.fundo {
 
-        .logo {
+    position: fixed;
 
-            width:
-                230px;
+    inset: 0;
 
-            height:
-                75px;
+    z-index: -10;
 
-            object-fit:
-                contain;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(16, 25, 35, .72),
+            rgba(11, 17, 25, .97)
+        ),
+        url("../img/background.png");
 
-        }
+    background-size:
+        cover;
 
+    background-position:
+        center;
 
-        .acoes-direita {
+    background-attachment:
+        fixed;
 
-            display:
-                flex;
+}
 
-            align-items:
-                center;
 
-            gap:
-                15px;
+.fundo::after {
 
-        }
+    content: "";
 
+    position: absolute;
 
-        /* =====================================
-           PESQUISA
-        ===================================== */
+    inset: 0;
 
-        .barraPesquisa {
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(56, 189, 248, .08),
+            transparent 45%
+        );
 
-            width:
-                300px;
+}
 
-        }
 
+/* =========================================================
+   NAVBAR
+========================================================= */
 
-        .input-pesquisa {
+.navbar {
 
-            width:
-                100%;
+    position: sticky;
 
-            height:
-                40px;
+    top: 0;
 
-            padding:
-                0 18px;
+    z-index: 100;
 
-            border:
-                2px solid rgba(255, 255, 255, .15);
+    min-height: 76px;
 
-            border-radius:
-                30px;
+    background:
+        rgba(11, 17, 25, .94);
 
-            outline:
-                none;
+    border-bottom:
+        1px solid var(--border);
 
-            background:
-                transparent;
+    backdrop-filter:
+        blur(15px);
 
-            color:
-                rgb(162, 201, 212);
+}
 
-        }
 
+.menu {
 
-        .input-pesquisa::placeholder {
+    width: 100%;
 
-            color:
-                #c5c5c5;
+    padding:
+        8px 35px;
 
-        }
+}
 
 
-        .input-pesquisa:focus {
+.logo-link {
 
-            border-color:
-                rgb(162, 201, 212);
+    display: flex;
 
-        }
+    align-items: center;
 
+}
 
-        /* =====================================
-           PERFIL
-        ===================================== */
 
-        .butPerfil {
+.logo {
 
-            width:
-                45px;
+    width: 205px;
 
-            height:
-                45px;
+    height: 65px;
 
-            border:
-                none;
+    object-fit: contain;
 
-            border-radius:
-                50%;
+    transition:
+        .25s ease;
 
-            background:
-                rgb(39, 57, 80);
+}
 
-            cursor:
-                pointer;
 
-            overflow:
-                hidden;
+.logo:hover {
 
-            display:
-                block;
+    transform:
+        scale(1.04);
 
-            padding:
-                0;
+}
 
-            text-decoration:
-                none;
 
-            flex-shrink:
-                0;
+.acoes-direita {
 
-        }
+    display: flex;
 
+    align-items: center;
 
-        .butPerfil:hover {
+    gap: 12px;
 
+}
 
-            opacity:
-                .85;
 
-        }
+/* =========================================================
+   PESQUISA
+========================================================= */
 
+.barraPesquisa {
 
-        .imgBut {
+    position: relative;
 
-            width:
-                100%;
+    width: 310px;
 
-            height:
-                100%;
+}
 
-            object-fit:
-                cover;
 
-            display:
-                block;
+.barraPesquisa i {
 
-        }
+    position: absolute;
 
+    left: 17px;
 
-        /* =====================================
-           POPUP
-        ===================================== */
+    top: 50%;
 
-        .overlay {
+    transform:
+        translateY(-50%);
 
-            display:
-                none;
+    color:
+        var(--text-muted);
 
-            position:
-                fixed;
+    pointer-events:
+        none;
 
-            inset:
-                0;
+}
 
-            background:
-                rgba(0, 0, 0, .65);
 
-            justify-content:
-                center;
+.input-pesquisa {
 
-            align-items:
-                center;
+    width: 100%;
 
-            z-index:
-                100;
+    height: 43px;
 
-        }
+    padding:
+        8px 18px 8px 45px;
 
+    border:
+        1px solid var(--border);
 
-        .popupPerfil {
+    border-radius:
+        30px;
 
-            width:
-                300px;
+    outline: none;
 
-            padding:
-                25px;
+    color:
+        white;
 
-            text-align:
-                center;
+    background:
+        rgba(255,255,255,.05);
 
-            border-radius:
-                8px;
+    transition:
+        .25s ease;
 
-            background:
-                rgb(27, 40, 56);
+}
 
-            border:
-                1px solid rgb(68, 91, 119);
 
+.input-pesquisa::placeholder {
 
-        }
+    color:
+        var(--text-muted);
 
-        
+}
 
 
-        .imgPerfil {
+.input-pesquisa:focus {
 
-            width:
-                90px;
+    border-color:
+        var(--accent);
 
-            height:
-                90px;
+    background:
+        rgba(255,255,255,.08);
 
-            border-radius:
-                50%;
+    box-shadow:
+        0 0 0 3px
+        rgba(56,189,248,.08);
 
-            margin:
-                15px;
+}
 
-            object-fit:
-                cover;
 
-        }
+/* =========================================================
+   BOTÃO ADICIONAR JOGO
+========================================================= */
 
+.btnAdicionarJogo {
 
-        .popupPerfil ul {
+    display: flex;
 
-            list-style:
-                none;
+    align-items: center;
 
-            padding:
-                0;
+    justify-content: center;
 
-        }
+    gap: 7px;
 
+    min-height: 43px;
 
-        .popupPerfil li {
+    padding:
+        0 17px;
 
+    border:
+        1px solid
+        rgba(56,189,248,.5);
 
-            margin:
-                10px;
+    border-radius:
+        25px;
 
-        }
+    color:
+        white;
 
+    background:
+        rgba(56,189,248,.12);
 
-        .popupPerfil a {
+    font-size:
+        13px;
 
-            
-            color:#c5c5c5;
-            text-decoration:none;
-            font-size: 20px;
+    font-weight:
+        500;
 
-        }
+    transition:
+        .25s ease;
 
-        
-        .popupPerfil a:hover {
+}
 
-            
-            transition:0.30s;
-            color: rgb(47, 172, 163);
-            text-decoration:none;
-            font-size: 20px;
 
-        }
+.btnAdicionarJogo:hover {
 
+    color:
+        white;
 
-        .close-btn {
+    background:
+        var(--accent);
 
-            border:
-                none;
+    border-color:
+        var(--accent);
 
-            padding:
-                8px 20px;
+    transform:
+        translateY(-2px);
 
-            border-radius:
-                5px;
+    box-shadow:
+        0 8px 20px
+        rgba(56,189,248,.18);
 
-            background:
-                rgb(162, 201, 212);
+}
 
-            color:
-                rgb(27, 40, 56);
 
-            cursor:
-                pointer;
+/* =========================================================
+   PERFIL
+========================================================= */
 
-        }
+.butPerfil {
 
+    width: 45px;
 
-        .close-btn:hover {
+    height: 45px;
 
-            opacity:
-                .85;
+    flex-shrink: 0;
 
-        }
+    display: flex;
 
+    align-items: center;
 
-        /* =====================================
-           CONTEÚDO
-        ===================================== */
+    justify-content: center;
 
-        .conteudo {
+    padding: 0;
 
-            width:
-                90%;
+    border:
+        1px solid
+        var(--border);
 
-            max-width:
-                1250px;
+    border-radius: 50%;
 
-            margin:
-                auto;
+    background:
+        var(--bg-card);
 
-        }
+    overflow: hidden;
 
+    cursor: pointer;
 
-        .titulo {
+    transition:
+        .25s ease;
 
-            margin-top:
-                40px;
+}
 
-            margin-bottom:
-                20px;
 
-        }
+.butPerfil:hover {
 
+    border-color:
+        var(--accent);
 
-        .titulo h1 {
+    transform:
+        scale(1.05);
 
-            font-size:
-                30px;
+}
 
-        }
 
+.imgBut {
 
-        /* =====================================
-           CAROUSEL
-        ===================================== */
+    width: 100%;
 
-        .carousel {
+    height: 100%;
 
-            border-radius:
-                8px;
+    object-fit: cover;
 
-            overflow:
-                hidden;
+}
 
-            box-shadow:
-                0 5px 20px rgba(0, 0, 0, .5);
 
-        }
+/* =========================================================
+   POPUP
+========================================================= */
 
+.overlay {
 
-        .carousel-item {
+    position: fixed;
 
-            height:
-                450px;
+    inset: 0;
 
-            background:
-                rgb(27, 40, 56);
+    z-index: 1000;
 
-        }
+    display: flex;
 
+    align-items: center;
 
-        .carousel-item img {
+    justify-content: center;
 
-            width:
-                100%;
+    padding: 20px;
 
-            height:
-                100%;
+    background:
+        rgba(0,0,0,.72);
 
-            object-fit:
-                cover;
+    backdrop-filter:
+        blur(6px);
 
-        }
+    opacity: 0;
 
+    visibility: hidden;
 
-        .carousel-item::after {
+    transition:
+        .25s ease;
 
-            content:
-                "";
+}
 
-            position:
-                absolute;
 
-            inset:
-                0;
+.overlay.ativo {
 
-            background:
-                linear-gradient(
-                    transparent 35%,
-                    rgba(0, 0, 0, .85)
-                );
+    opacity: 1;
 
-        }
+    visibility: visible;
 
+}
 
-        .carousel-caption {
 
-            z-index:
-                2;
+.popupPerfil {
 
-            text-align:
-                left;
+    position: relative;
 
-            left:
-                5%;
+    width: 390px;
 
-        }
+    max-width: 100%;
 
+    padding:
+        40px 35px;
 
-        .carousel-caption h2 {
+    text-align: center;
 
-            font-size:
-                32px;
+    border:
+        1px solid var(--border);
 
-        }
+    border-radius:
+        18px;
 
+    background:
+        linear-gradient(
+            145deg,
+            #1c2b3d,
+            #121c28
+        );
 
-        /* =====================================
-           LISTAS
-        ===================================== */
+    box-shadow:
+        var(--shadow);
 
-        .container-lista {
+    transform:
+        translateY(20px);
 
-            display:
-                grid;
+    transition:
+        .3s ease;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+}
 
-            gap:
-                20px;
 
-            margin-top:
-                35px;
+.overlay.ativo .popupPerfil {
 
-        }
+    transform:
+        translateY(0);
 
+}
 
-        .lista {
 
-            background:
-                rgba(27, 40, 56, .9);
+.popup-fechar {
 
-            border:
-                1px solid rgb(36, 53, 75);
+    position: absolute;
 
-            border-radius:
-                6px;
+    top: 15px;
 
-            padding:
-                20px;
+    right: 15px;
 
-        }
+    width: 35px;
 
+    height: 35px;
 
-        .lista h3 {
+    border: none;
 
-            margin-bottom:
-                15px;
+    border-radius: 50%;
 
-        }
+    color:
+        var(--text-muted);
 
+    background:
+        rgba(255,255,255,.06);
 
-        .lista ul {
+    cursor: pointer;
 
-            list-style:
-                none;
+}
 
-            padding:
-                0;
 
-        }
+.popup-fechar:hover {
 
+    color:
+        white;
 
-        .linha {
+    background:
+        rgba(231,76,60,.2);
 
-            margin-bottom:
-                8px;
+}
 
-        }
 
+.popup-icone {
 
-        .linha a {
+    width: 75px;
 
-            display:
-                flex;
+    height: 75px;
 
-            align-items:
-                center;
+    margin:
+        0 auto 18px;
 
-            gap:
-                10px;
+    display: flex;
 
-            padding:
-                8px;
+    align-items: center;
 
-            text-decoration:
-                none;
+    justify-content: center;
 
-            border-radius:
-                5px;
+    border-radius: 50%;
 
-            transition:
-                .2s;
+    color:
+        var(--accent);
 
-            font-size: 17px;
+    background:
+        rgba(56,189,248,.1);
 
-            font-weight: 600;
+    font-size:
+        30px;
 
-            color: #c5c5c5;
+}
 
-        }
 
+.popupPerfil h2 {
 
-        .linha a:hover {
+    margin-bottom:
+        8px;
 
-            background:
-                rgb(39, 57, 80);
+    color:
+        white;
 
-        }
+    font-size:
+        25px;
 
+}
 
-        .img {
 
-            width:
-                55px;
+.popupPerfil p {
 
-            height:
-                55px;
+    margin-bottom:
+        25px;
 
-            object-fit:
-                cover;
+    color:
+        var(--text-muted);
 
-            border-radius:
-                5px;
+    font-size:
+        13px;
 
-        }
+    line-height:
+        1.7;
 
+}
 
-        /* =====================================
-           SOBRE
-        ===================================== */
 
-        .sobre {
+.popup-acoes {
 
-            margin-top:
-                40px;
+    display: flex;
 
-            padding:
-                30px;
+    flex-direction: column;
 
-            background:
-                rgba(27, 40, 56, .9);
+    gap: 10px;
 
-            border:
-                1px solid rgb(36, 53, 75);
+}
 
-            border-radius:
-                6px;
 
-            line-height:
-                1.7;
+.popup-login,
+.popup-cadastro {
 
-        }
+    display: flex;
 
+    align-items: center;
 
-        .sobre h2 {
+    justify-content: center;
 
-            margin-bottom:
-                15px;
+    gap: 8px;
 
-        }
+    min-height: 45px;
 
+    border-radius:
+        8px;
 
-        /* =====================================
-           FOOTER
-        ===================================== */
+    font-size:
+        14px;
 
-        .rodape {
+    font-weight:
+        500;
 
-            margin-top:
-                60px;
+    transition:
+        .25s ease;
 
-            background:
-                rgb(20, 29, 41);
+}
 
-            border-top:
-                1px solid rgb(39, 57, 80);
 
-            padding:
-                25px 5%;
+.popup-login {
 
-        }
+    color:
+        var(--bg-dark);
 
+    background:
+        var(--text);
 
-        .footer-content {
+}
 
-            display:
-                flex;
 
-            justify-content:
-                space-between;
+.popup-login:hover {
 
-            align-items:
-                center;
+    color:
+        var(--bg-dark);
 
-        }
+    background:
+        white;
 
+}
 
-        .icones {
 
-            display:
-                flex;
+.popup-cadastro {
 
-            gap:
-                15px;
+    color:
+        var(--text);
 
-        }
+    border:
+        1px solid var(--border);
 
+}
 
-        .icones a {
 
-            text-decoration:
-                none;
+.popup-cadastro:hover {
 
-        }
+    color:
+        white;
 
+    border-color:
+        var(--accent);
 
-        .icones a:hover {
+}
 
-            color:
-                white;
 
-        }
+/* =========================================================
+   CONTEÚDO
+========================================================= */
 
+.conteudo {
 
-        /* =====================================
-           RESPONSIVO
-        ===================================== */
+    width: 92%;
 
-        @media(max-width: 832px) {
+    max-width: 1280px;
 
-            .menu {
+    margin:
+        0 auto;
 
-                flex-direction:
-                    column;
+    padding:
+        35px 0 70px;
 
-                gap:
-                    10px;
+}
 
-            }
 
+/* =========================================================
+   BOAS-VINDAS
+========================================================= */
 
-            .acoes-direita {
+.boas-vindas {
 
-                width:
-                    100%;
+    position: relative;
 
-                justify-content:
-                    center;
+    display: flex;
 
-            }
+    align-items: center;
 
+    justify-content: space-between;
 
-            .barraPesquisa {
+    min-height: 170px;
 
-                width:
-                    60%;
+    margin-bottom:
+        35px;
 
-            }
+    padding:
+        30px 38px;
 
+    overflow: hidden;
 
-            .container-lista {
+    border:
+        1px solid var(--border);
 
-                grid-template-columns:
-                    1fr;
+    border-radius:
+        18px;
 
-            }
+    background:
+        linear-gradient(
+            115deg,
+            rgba(27,40,56,.96),
+            rgba(18,29,43,.88)
+        );
 
+    box-shadow:
+        var(--shadow);
 
-            .carousel-item {
+}
 
-                height:
-                    350px;
 
-            }
+.boas-vindas::after {
 
-        }
+    content: "";
 
+    position: absolute;
 
-        @media(max-width: 480px) {
+    width: 300px;
 
-            .conteudo {
+    height: 300px;
 
-                width:
-                    94%;
+    right: -120px;
 
-            }
+    top: -160px;
 
+    border-radius: 50%;
 
-            .logo {
+    background:
+        rgba(56,189,248,.08);
 
-                width:
-                    190px;
+}
 
-            }
 
+.boas-vindas-label {
 
-            .barraPesquisa {
+    color:
+        var(--accent);
 
-                width:
-                    100%;
+    font-size:
+        11px;
 
-            }
+    font-weight:
+        600;
 
+    letter-spacing:
+        2px;
 
-            .carousel-item {
+}
 
-                height:
-                    250px;
 
-            }
+.boas-vindas h1 {
 
+    margin:
+        7px 0;
 
-            .carousel-caption h2 {
+    color:
+        white;
 
-                font-size:
-                    22px;
+    font-size:
+        clamp(24px, 4vw, 34px);
 
-            }
+    font-weight:
+        500;
 
+}
 
-            .footer-content {
 
-                flex-direction:
-                    column;
+.boas-vindas h1 strong {
 
-                gap:
-                    20px;
+    color:
+        var(--text);
 
-                text-align:
-                    center;
+}
 
-            }
 
-        }
+.boas-vindas p {
+
+    margin: 0;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        14px;
+
+}
+
+
+.boas-vindas-icone {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 90px;
+
+    height: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(56,189,248,.2);
+
+    border-radius:
+        20px;
+
+    color:
+        var(--accent);
+
+    background:
+        rgba(56,189,248,.08);
+
+    font-size:
+        38px;
+
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.titulo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin:
+        15px 0 20px;
+
+}
+
+
+.titulo h2 {
+
+    flex-shrink: 0;
+
+    margin: 0;
+
+    color:
+        white;
+
+    font-size:
+        24px;
+
+    font-weight:
+        600;
+
+}
+
+
+.titulo-linha {
+
+    width: 100%;
+
+    height: 1px;
+
+    background:
+        var(--border);
+
+}
+
+
+/* =========================================================
+   CAROUSEL
+========================================================= */
+
+.carousel-solvebugs {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    background:
+        #101923;
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+.carousel-item {
+
+    position: relative;
+
+    height: 450px;
+
+}
+
+
+.carousel-banner {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.carousel-sem-imagem {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172638,
+            #0e1722
+        );
+
+    color:
+        var(--text);
+
+    font-size:
+        70px;
+
+}
+
+
+.carousel-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,14,21,.95) 0%,
+            rgba(8,14,21,.55) 45%,
+            rgba(8,14,21,.15) 100%
+        );
+
+}
+
+
+.carousel-caption {
+
+    position: absolute;
+
+    left: 8%;
+
+    right: auto;
+
+    bottom: 80px;
+
+    width: 55%;
+
+    text-align: left;
+
+}
+
+
+.badge-destaque {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        6px 10px;
+
+    border:
+        1px solid
+        rgba(56,189,248,.3);
+
+    border-radius:
+        20px;
+
+    color:
+        var(--accent);
+
+    background:
+        rgba(56,189,248,.1);
+
+    font-size:
+        11px;
+
+}
+
+
+.carousel-caption h2 {
+
+    margin-bottom:
+        5px;
+
+    color:
+        white;
+
+    font-size:
+        clamp(28px, 5vw, 48px);
+
+    font-weight:
+        700;
+
+}
+
+
+.carousel-caption p {
+
+    margin-bottom:
+        18px;
+
+    color:
+        #d0d9dd;
+
+    font-size:
+        14px;
+
+}
+
+
+.btnVerJogo {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        10px 18px;
+
+    border-radius:
+        7px;
+
+    color:
+        #10202d;
+
+    background:
+        var(--text);
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    transition:
+        .25s ease;
+
+}
+
+
+.btnVerJogo:hover {
+
+    color:
+        #10202d;
+
+    background:
+        white;
+
+    transform:
+        translateX(3px);
+
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+
+    width: 8%;
+
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.secao-jogos {
+
+    margin-top:
+        55px;
+
+}
+
+
+.cabecalho-secao {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.mini-titulo {
+
+    display: block;
+
+    margin-bottom:
+        4px;
+
+    color:
+        var(--accent);
+
+    font-size:
+        10px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        1.8px;
+
+}
+
+
+.cabecalho-secao h2 {
+
+    margin: 0;
+
+    color:
+        white;
+
+    font-size:
+        23px;
+
+    font-weight:
+        600;
+
+}
+
+
+.cabecalho-secao h2 i {
+
+    margin-right:
+        8px;
+
+    color:
+        var(--text);
+
+    font-size:
+        18px;
+
+}
+
+
+.ver-todos {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        12px;
+
+    transition:
+        .2s ease;
+
+}
+
+
+.ver-todos:hover {
+
+    color:
+        var(--accent);
+
+    transform:
+        translateX(3px);
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid-jogos {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap:
+        15px;
+
+}
+
+
+.card-jogo {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(24,37,54,.88);
+
+    transition:
+        .3s ease;
+
+}
+
+
+.card-jogo:hover {
+
+    transform:
+        translateY(-6px);
+
+    border-color:
+        rgba(56,189,248,.45);
+
+    background:
+        var(--bg-card-hover);
+
+    box-shadow:
+        0 15px 30px
+        rgba(0,0,0,.25);
+
+}
+
+
+.card-imagem {
+
+    position: relative;
+
+    height: 220px;
+
+    overflow: hidden;
+
+    background:
+        #101923;
+
+}
+
+
+.card-imagem img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        .35s ease;
+
+}
+
+
+.card-jogo:hover .card-imagem img {
+
+    transform:
+        scale(1.06);
+
+}
+
+
+.sem-capa {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172638,
+            #101923
+        );
+
+}
+
+
+.numero-card,
+.novo-card,
+.data-card {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    padding:
+        5px 8px;
+
+    border-radius:
+        5px;
+
+    color:
+        white;
+
+    background:
+        rgba(8,14,21,.85);
+
+    backdrop-filter:
+        blur(5px);
+
+    font-size:
+        10px;
+
+    font-weight:
+        500;
+
+}
+
+
+.numero-card i {
+
+    margin-right:
+        3px;
+
+}
+
+
+.numero-card.favorito {
+
+    color:
+        #f6d365;
+
+}
+
+
+.novo-card {
+
+    color:
+        var(--accent);
+
+}
+
+
+.data-card {
+
+    color:
+        var(--text);
+
+}
+
+
+.card-info {
+
+    padding:
+        14px;
+
+}
+
+
+.card-info h3 {
+
+    overflow: hidden;
+
+    margin-bottom:
+        7px;
+
+    color:
+        white;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    white-space:
+        nowrap;
+
+    text-overflow:
+        ellipsis;
+
+}
+
+
+.card-info span {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    overflow: hidden;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        10px;
+
+    white-space:
+        nowrap;
+
+    text-overflow:
+        ellipsis;
+
+}
+
+
+.card-info span i {
+
+    color:
+        var(--accent);
+
+}
+
+
+/* =========================================================
+   SEM RESULTADOS
+========================================================= */
+
+.sem-resultados {
+
+    grid-column:
+        1 / -1;
+
+    padding:
+        30px;
+
+    text-align:
+        center;
+
+    color:
+        var(--text-muted);
+
+    border:
+        1px dashed var(--border);
+
+    border-radius:
+        10px;
+
+}
+
+
+/* =========================================================
+   SEM JOGOS
+========================================================= */
+
+.sem-jogos {
+
+    padding:
+        70px 20px;
+
+    text-align:
+        center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    background:
+        rgba(20,29,41,.85);
+
+}
+
+
+.sem-jogos > i {
+
+    margin-bottom:
+        15px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        50px;
+
+}
+
+
+.sem-jogos h3 {
+
+    margin-bottom:
+        20px;
+
+    color:
+        white;
+
+    font-size:
+        18px;
+
+}
+
+
+.btnAdicionarGrande {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        10px 18px;
+
+    border-radius:
+        7px;
+
+    color:
+        #10202d;
+
+    background:
+        var(--text);
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+}
+
+
+/* =========================================================
+   SOBRE
+========================================================= */
+
+.sobre {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    margin-top:
+        70px;
+
+    padding:
+        35px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27,40,56,.95),
+            rgba(18,29,43,.9)
+        );
+
+}
+
+
+.sobre-icone {
+
+    width: 85px;
+
+    height: 85px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius:
+        18px;
+
+    color:
+        var(--accent);
+
+    background:
+        rgba(56,189,248,.08);
+
+    font-size:
+        35px;
+
+}
+
+
+.sobre-texto h2 {
+
+    margin-bottom:
+        12px;
+
+    color:
+        white;
+
+    font-size:
+        25px;
+
+}
+
+
+.sobre-texto p {
+
+    margin-bottom:
+        8px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.rodape {
+
+    margin-top:
+        20px;
+
+    padding:
+        25px 35px;
+
+    border-top:
+        1px solid var(--border);
+
+    background:
+        rgba(8,14,21,.8);
+
+}
+
+
+.footer-content {
+
+    width: 92%;
+
+    max-width: 1280px;
+
+    margin:
+        auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.footer-logo img {
+
+    width:
+        120px;
+
+    height:
+        auto;
+
+}
+
+
+.footer-content small {
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        10px;
+
+}
+
+
+.icones {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.icones a {
+
+    width: 35px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        50%;
+
+    color:
+        var(--text-muted);
+
+    transition:
+        .2s ease;
+
+}
+
+
+.icones a:hover {
+
+    color:
+        var(--accent);
+
+    border-color:
+        var(--accent);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .grid-jogos {
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+    }
+
+
+    .grid-jogos .card-jogo:nth-child(5) {
+
+        display: none;
+
+    }
+
+
+    .barraPesquisa {
+
+        width:
+            230px;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET PEQUENO
+========================================================= */
+
+@media (max-width: 832px) {
+
+    .menu {
+
+        padding:
+            8px 18px;
+
+    }
+
+
+    .logo {
+
+        width:
+            160px;
+
+        height:
+            55px;
+
+    }
+
+
+    .acoes-direita {
+
+        gap:
+            7px;
+
+    }
+
+
+    .btnAdicionarJogo span {
+
+        display:
+            none;
+
+    }
+
+
+    .btnAdicionarJogo {
+
+        width:
+            43px;
+
+        padding:
+            0;
+
+    }
+
+
+    .barraPesquisa {
+
+        width:
+            200px;
+
+    }
+
+
+    .grid-jogos {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .grid-jogos .card-jogo:nth-child(4),
+    .grid-jogos .card-jogo:nth-child(5) {
+
+        display:
+            none;
+
+    }
+
+
+    .carousel-item {
+
+        height:
+            390px;
+
+    }
+
+
+    .carousel-caption {
+
+        width:
+            70%;
+
+        left:
+            7%;
+
+        bottom:
+            65px;
+
+    }
+
+
+    .sobre {
+
+        align-items:
+            flex-start;
+
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .conteudo {
+
+        width:
+            94%;
+
+        padding-top:
+            20px;
+
+    }
+
+
+    .menu {
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            5px;
+
+    }
+
+
+    .logo {
+
+        width:
+            140px;
+
+    }
+
+
+    .acoes-direita {
+
+        margin-left:
+            auto;
+
+    }
+
+
+    .barraPesquisa {
+
+        width:
+            150px;
+
+    }
+
+
+    .input-pesquisa {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .boas-vindas {
+
+        min-height:
+            auto;
+
+        padding:
+            25px;
+
+    }
+
+
+    .boas-vindas-icone {
+
+        display:
+            none;
+
+    }
+
+
+    .boas-vindas h1 {
+
+        font-size:
+            23px;
+
+    }
+
+
+    .boas-vindas p {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .titulo h2 {
+
+        font-size:
+            19px;
+
+    }
+
+
+    .carousel-item {
+
+        height:
+            330px;
+
+    }
+
+
+    .carousel-caption {
+
+        width:
+            78%;
+
+        left:
+            8%;
+
+        bottom:
+            50px;
+
+    }
+
+
+    .carousel-caption h2 {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .carousel-caption p {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .grid-jogos {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            10px;
+
+    }
+
+
+    .grid-jogos .card-jogo:nth-child(n) {
+
+        display:
+            block;
+
+    }
+
+
+    .card-imagem {
+
+        height:
+            190px;
+
+    }
+
+
+    .card-info {
+
+        padding:
+            11px;
+
+    }
+
+
+    .card-info h3 {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .card-info span {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .cabecalho-secao h2 {
+
+        font-size:
+            19px;
+
+    }
+
+
+    .ver-todos {
+
+        font-size:
+            10px;
+
+    }
+
+
+    .sobre {
+
+        flex-direction:
+            column;
+
+        padding:
+            25px;
+
+    }
+
+
+    .sobre-icone {
+
+        width:
+            60px;
+
+        height:
+            60px;
+
+        font-size:
+            25px;
+
+    }
+
+
+    .sobre-texto h2 {
+
+        font-size:
+            21px;
+
+    }
+
+
+    .footer-content {
+
+        flex-direction:
+            column;
+
+        text-align:
+            center;
+
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR PEQUENO
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .barraPesquisa {
+
+        width:
+            125px;
+
+    }
+
+
+    .input-pesquisa {
+
+        padding-left:
+            38px;
+
+    }
+
+
+    .barraPesquisa i {
+
+        left:
+            13px;
+
+    }
+
+
+    .butPerfil {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+    }
+
+
+    .btnAdicionarJogo {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        min-height:
+            40px;
+
+    }
+
+
+    .logo {
+
+        width:
+            125px;
+
+    }
+
+
+    .card-imagem {
+
+        height:
+            165px;
+
+    }
+
+
+    .card-info h3 {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .carousel-item {
+
+        height:
+            300px;
+
+    }
+
+
+    .badge-destaque {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .carousel-caption h2 {
+
+        font-size:
+            23px;
+
+    }
+
+}
