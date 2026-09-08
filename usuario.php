@@ -33,7 +33,6 @@ $pastaBanco = "img/perfis/";
 if (!is_dir($pastaUpload)) {
 
     mkdir($pastaUpload, 0755, true);
-
 }
 
 
@@ -64,7 +63,6 @@ if (!$usuario) {
 
     header("Location: logout.php");
     exit;
-
 }
 
 
@@ -101,13 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($nome === "") {
 
             $erro = "O nome não pode ficar vazio.";
-
-        }
-
-        elseif (strlen($nome) < 3) {
+        } elseif (strlen($nome) < 3) {
 
             $erro = "O nome deve ter pelo menos 3 caracteres.";
-
         }
 
 
@@ -118,7 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
             $erro = "Digite um e-mail válido.";
-
         }
 
 
@@ -143,9 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($stmtEmail->fetch()) {
 
                 $erro = "Esse e-mail já está sendo usado por outro usuário.";
-
             }
-
         }
 
 
@@ -174,9 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Atualiza os dados na tela
             $usuario["nome"] = $nome;
             $usuario["email"] = $email;
-
         }
-
     }
 
 
@@ -202,10 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($senhaAtual === "") {
 
             $erro = "Digite sua senha atual.";
-
-        }
-
-        elseif (
+        } elseif (
             !password_verify(
                 $senhaAtual,
                 $usuario["senha"]
@@ -213,7 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ) {
 
             $erro = "A senha atual está incorreta.";
-
         }
 
 
@@ -224,7 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         elseif (strlen($novaSenha) < 6) {
 
             $erro = "A nova senha deve ter pelo menos 6 caracteres.";
-
         }
 
 
@@ -235,7 +219,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         elseif ($novaSenha !== $confirmarSenha) {
 
             $erro = "As novas senhas não são iguais.";
-
         }
 
 
@@ -264,9 +247,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
             $mensagem = "Senha alterada com sucesso!";
-
         }
-
     }
 
 
@@ -289,11 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ) {
 
             $erro = "Selecione uma imagem para enviar.";
-
-        }
-
-
-        else {
+        } else {
 
             $arquivo = $_FILES["foto"];
 
@@ -308,7 +285,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($arquivo["size"] > $tamanhoMaximo) {
 
                 $erro = "A imagem deve ter no máximo 2 MB.";
-
             }
 
 
@@ -343,9 +319,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     $erro =
                         "Formato inválido. Use JPG, PNG ou WEBP.";
-
                 }
-
             }
 
 
@@ -402,9 +376,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         ) {
 
                             unlink($fotoAntiga);
-
                         }
-
                     }
 
 
@@ -440,20 +412,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     $mensagem =
                         "Foto de perfil alterada com sucesso!";
-
-                }
-
-                else {
+                } else {
 
                     $erro =
                         "Não foi possível salvar a imagem.";
-
                 }
-
             }
-
         }
-
     }
 
 
@@ -479,10 +444,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $erro =
                 "Digite sua senha para excluir a conta.";
-
-        }
-
-        elseif (
+        } elseif (
             !password_verify(
                 $senhaExcluir,
                 $usuario["senha"]
@@ -491,7 +453,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $erro =
                 "Senha incorreta. A conta não foi excluída.";
-
         }
 
 
@@ -516,9 +477,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ) {
 
                     unlink($fotoExcluir);
-
                 }
-
             }
 
 
@@ -552,7 +511,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $params["secure"],
                     $params["httponly"]
                 );
-
             }
 
 
@@ -562,11 +520,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Voltar para o início
             header("Location: index.php");
             exit;
-
         }
-
     }
-
 }
 
 ?>
@@ -595,229 +550,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 
 
-<a
-    class="close-btn"
-    href="index.php">
+    <a
+        class="close-btn"
+        href="index.php">
 
-    Voltar
+        Voltar
 
-</a>
-
-
-<div class="container">
+    </a>
 
 
-    <!-- ==================================================
+    <div class="container">
+
+
+        <!-- ==================================================
          SIDEBAR
     ================================================== -->
 
-    <aside class="sidebar">
+        <aside class="sidebar">
 
 
-        <div class="profile">
+            <div class="profile">
 
 
-            <div class="foto-container">
+                <div class="foto-container">
 
-                <img
-                    src="<?= htmlspecialchars($fotoAtual) ?>"
-                    alt="Foto de perfil"
-                    class="foto-perfil">
+                    <img
+                        src="<?= htmlspecialchars($fotoAtual) ?>"
+                        alt="Foto de perfil"
+                        class="foto-perfil">
 
-            </div>
+                </div>
 
 
-            <h3>
-
-                <?= htmlspecialchars($usuario["nome"]) ?>
-
-            </h3>
-
-
-            <p>
-
-                <?= htmlspecialchars($usuario["email"]) ?>
-
-            </p>
-
-
-        </div>
-
-
-        <ul class="menu">
-
-
-            <li class="ativo">
-
-                ⭐ Minha conta
-
-            </li>
-
-
-            <li onclick="mostrarDados()">
-
-                👤 Dados da conta
-
-            </li>
-
-
-            <li onclick="mostrarSenha()">
-
-                🔒 Segurança
-
-            </li>
-
-
-            <li onclick="mostrarExcluir()">
-
-                ⚠️ Excluir conta
-
-            </li>
-
-
-            <li>
-
-                <a href="logout.php">
-
-                    🚪 Sair
-
-                </a>
-
-            </li>
-
-
-        </ul>
-
-
-    </aside>
-
-
-
-    <!-- ==================================================
-         CONTEÚDO PRINCIPAL
-    ================================================== -->
-
-    <main class="main">
-
-
-        <div class="header">
-
-            <div>
-
-                <h2>
-
-                    Minha conta
-
-                </h2>
-
-
-                <p class="subtitulo">
-
-                    Gerencie seus dados do SolveBug
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ==================================================
-             MENSAGENS
-        ================================================== -->
-
-        <?php if ($mensagem !== ""): ?>
-
-            <div class="mensagem sucesso">
-
-                <?= htmlspecialchars($mensagem) ?>
-
-            </div>
-
-        <?php endif; ?>
-
-
-        <?php if ($erro !== ""): ?>
-
-            <div class="mensagem erro">
-
-                <?= htmlspecialchars($erro) ?>
-
-            </div>
-
-        <?php endif; ?>
-
-
-
-        <!-- ==================================================
-             PERFIL
-        ================================================== -->
-
-        <section class="perfil-card">
-
-
-            <div class="perfil-foto-area">
-
-
-                <img
-                    src="<?= htmlspecialchars($fotoAtual) ?>"
-                    alt="Foto de perfil"
-                    class="foto-grande">
-
-
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="form-foto">
-
-
-                    <input
-                        type="hidden"
-                        name="acao"
-                        value="foto">
-
-
-                    <label
-                        for="foto"
-                        class="botao">
-
-                        📷 Alterar foto
-
-                    </label>
-
-
-                    <input
-                        type="file"
-                        id="foto"
-                        name="foto"
-                        accept="image/jpeg,image/png,image/webp"
-                        onchange="this.form.submit()"
-                        hidden>
-
-
-                    <small>
-
-                        JPG, PNG ou WEBP — máximo 2 MB
-
-                    </small>
-
-
-                </form>
-
-
-            </div>
-
-
-
-            <div class="perfil-info">
-
-
-                <h2>
+                <h3>
 
                     <?= htmlspecialchars($usuario["nome"]) ?>
 
-                </h2>
+                </h3>
 
 
                 <p>
@@ -827,540 +596,738 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </p>
 
 
-                <span class="tipo-conta">
-
-                    <?= htmlspecialchars($usuario["tipo"]) ?>
-
-                </span>
-
-
             </div>
 
 
-        </section>
+            <ul class="menu">
+
+
+                <li class="ativo">
+
+                    ⭐ Minha conta
+
+                </li>
+
+
+                <li onclick="mostrarDados()">
+
+                    👤 Dados da conta
+
+                </li>
+
+
+                <li onclick="mostrarSenha()">
+
+                    🔒 Segurança
+
+                </li>
+
+
+                <li onclick="mostrarExcluir()">
+
+                    ⚠️ Excluir conta
+
+                </li>
+                <?php if (isset($_SESSION["usuario_tipo"]) && $_SESSION["usuario_tipo"] === "admin"): ?>
+
+                    <div class="menu-separador"></div>
+
+                    <div class="menu-titulo">
+                        🛠️ Administração
+                    </div>
+
+                    <a href="cadastro_jogos.php" class="menu-item">
+                        🎮 Cadastrar jogo
+                    </a>
+
+                    <a href="gerenciar_jogos.php" class="menu-item">
+                        ⚙️ Gerenciar jogos
+                    </a>
+
+                <?php endif; ?>
+
+                <li>
+
+                    <a href="logout.php">
+
+                        🚪 Sair
+
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+
+        </aside>
 
 
 
         <!-- ==================================================
+         CONTEÚDO PRINCIPAL
+    ================================================== -->
+
+        <main class="main">
+
+
+            <div class="header">
+
+                <div>
+
+                    <h2>
+
+                        Minha conta
+
+                    </h2>
+
+
+                    <p class="subtitulo">
+
+                        Gerencie seus dados do SolveBug
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+             MENSAGENS
+        ================================================== -->
+
+            <?php if ($mensagem !== ""): ?>
+
+                <div class="mensagem sucesso">
+
+                    <?= htmlspecialchars($mensagem) ?>
+
+                </div>
+
+            <?php endif; ?>
+
+
+            <?php if ($erro !== ""): ?>
+
+                <div class="mensagem erro">
+
+                    <?= htmlspecialchars($erro) ?>
+
+                </div>
+
+            <?php endif; ?>
+
+
+
+            <!-- ==================================================
+             PERFIL
+        ================================================== -->
+
+            <section class="perfil-card">
+
+
+                <div class="perfil-foto-area">
+
+
+                    <img
+                        src="<?= htmlspecialchars($fotoAtual) ?>"
+                        alt="Foto de perfil"
+                        class="foto-grande">
+
+
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="form-foto">
+
+
+                        <input
+                            type="hidden"
+                            name="acao"
+                            value="foto">
+
+
+                        <label
+                            for="foto"
+                            class="botao">
+
+                            📷 Alterar foto
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="foto"
+                            name="foto"
+                            accept="image/jpeg,image/png,image/webp"
+                            onchange="this.form.submit()"
+                            hidden>
+
+
+                        <small>
+
+                            JPG, PNG ou WEBP — máximo 2 MB
+
+                        </small>
+
+
+                    </form>
+
+
+                </div>
+
+
+
+                <div class="perfil-info">
+
+
+                    <h2>
+
+                        <?= htmlspecialchars($usuario["nome"]) ?>
+
+                    </h2>
+
+
+                    <p>
+
+                        <?= htmlspecialchars($usuario["email"]) ?>
+
+                    </p>
+
+
+                    <span class="tipo-conta">
+
+                        <?= htmlspecialchars($usuario["tipo"]) ?>
+
+                    </span>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ==================================================
              DADOS DA CONTA
         ================================================== -->
 
-        <section
-            class="painel"
-            id="dados">
+            <section
+                class="painel"
+                id="dados">
 
 
-            <div class="painel-header">
+                <div class="painel-header">
 
-                <div>
+                    <div>
 
-                    <h2>
+                        <h2>
 
-                        👤 Dados da conta
+                            👤 Dados da conta
 
-                    </h2>
+                        </h2>
 
-                    <p>
+                        <p>
 
-                        Altere suas informações pessoais.
+                            Altere suas informações pessoais.
 
-                    </p>
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
 
-
-            <form
-                method="POST"
-                class="formulario">
-
-
-                <input
-                    type="hidden"
-                    name="acao"
-                    value="dados">
-
-
-                <div class="campo">
-
-                    <label for="nome">
-
-                        Nome de usuário
-
-                    </label>
+                <form
+                    method="POST"
+                    class="formulario">
 
 
                     <input
-                        type="text"
-                        id="nome"
-                        name="nome"
-                        value="<?= htmlspecialchars($usuario["nome"]) ?>"
-                        minlength="3"
-                        required>
-
-                </div>
+                        type="hidden"
+                        name="acao"
+                        value="dados">
 
 
+                    <div class="campo">
 
-                <div class="campo">
+                        <label for="nome">
 
-                    <label for="email">
+                            Nome de usuário
 
-                        E-mail
-
-                    </label>
+                        </label>
 
 
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value="<?= htmlspecialchars($usuario["email"]) ?>"
-                        required>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            value="<?= htmlspecialchars($usuario["nome"]) ?>"
+                            minlength="3"
+                            required>
 
-                </div>
+                    </div>
 
 
 
-                <button
-                    type="submit"
-                    class="botao salvar">
+                    <div class="campo">
 
-                    💾 Salvar alterações
+                        <label for="email">
 
-                </button>
+                            E-mail
 
-
-            </form>
-
-        </section>
+                        </label>
 
 
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="<?= htmlspecialchars($usuario["email"]) ?>"
+                            required>
 
-        <!-- ==================================================
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="botao salvar">
+
+                        💾 Salvar alterações
+
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+
+            <!-- ==================================================
              INFORMAÇÕES DA CONTA
         ================================================== -->
 
-        <section class="info-grid">
+            <section class="info-grid">
 
 
-            <div class="card">
+                <div class="card">
 
-                <h3>
+                    <h3>
 
-                    Tipo de conta
+                        Tipo de conta
 
-                </h3>
-
-
-                <p>
-
-                    <?= htmlspecialchars($usuario["tipo"]) ?>
-
-                </p>
-
-            </div>
+                    </h3>
 
 
+                    <p>
 
-            <div class="card">
+                        <?= htmlspecialchars($usuario["tipo"]) ?>
 
-                <h3>
+                    </p>
 
-                    Cadastro
-
-                </h3>
-
-
-                <p>
-
-                    <?= date(
-                        "d/m/Y H:i",
-                        strtotime(
-                            $usuario["data_cadastro"]
-                        )
-                    ) ?>
-
-                </p>
-
-            </div>
-
-
-        </section>
+                </div>
 
 
 
-        <!-- ==================================================
+                <div class="card">
+
+                    <h3>
+
+                        Cadastro
+
+                    </h3>
+
+
+                    <p>
+
+                        <?= date(
+                            "d/m/Y H:i",
+                            strtotime(
+                                $usuario["data_cadastro"]
+                            )
+                        ) ?>
+
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ==================================================
              SEGURANÇA
         ================================================== -->
 
-        <section
-            class="painel"
-            id="seguranca">
+            <section
+                class="painel"
+                id="seguranca">
 
 
-            <div class="painel-header">
+                <div class="painel-header">
 
-                <div>
+                    <div>
 
-                    <h2>
+                        <h2>
 
-                        🔒 Segurança
+                            🔒 Segurança
 
-                    </h2>
+                        </h2>
 
 
-                    <p>
+                        <p>
 
-                        Altere a senha da sua conta.
+                            Altere a senha da sua conta.
 
-                    </p>
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
 
-
-            <form
-                method="POST"
-                class="formulario">
-
-
-                <input
-                    type="hidden"
-                    name="acao"
-                    value="senha">
-
-
-                <div class="campo">
-
-                    <label for="senha_atual">
-
-                        Senha atual
-
-                    </label>
+                <form
+                    method="POST"
+                    class="formulario">
 
 
                     <input
-                        type="password"
-                        id="senha_atual"
-                        name="senha_atual"
-                        required>
-
-                </div>
+                        type="hidden"
+                        name="acao"
+                        value="senha">
 
 
+                    <div class="campo">
 
-                <div class="campo">
+                        <label for="senha_atual">
 
-                    <label for="nova_senha">
+                            Senha atual
 
-                        Nova senha
-
-                    </label>
-
-
-                    <input
-                        type="password"
-                        id="nova_senha"
-                        name="nova_senha"
-                        minlength="6"
-                        required>
+                        </label>
 
 
-                    <small>
+                        <input
+                            type="password"
+                            id="senha_atual"
+                            name="senha_atual"
+                            required>
 
-                        A senha deve ter pelo menos 6 caracteres.
-
-                    </small>
-
-                </div>
+                    </div>
 
 
 
-                <div class="campo">
+                    <div class="campo">
 
-                    <label for="confirmar_senha">
+                        <label for="nova_senha">
 
-                        Confirmar nova senha
+                            Nova senha
 
-                    </label>
-
-
-                    <input
-                        type="password"
-                        id="confirmar_senha"
-                        name="confirmar_senha"
-                        minlength="6"
-                        required>
-
-                </div>
+                        </label>
 
 
-
-                <button
-                    type="submit"
-                    class="botao salvar">
-
-                    🔑 Alterar senha
-
-                </button>
+                        <input
+                            type="password"
+                            id="nova_senha"
+                            name="nova_senha"
+                            minlength="6"
+                            required>
 
 
-            </form>
+                        <small>
 
-        </section>
+                            A senha deve ter pelo menos 6 caracteres.
+
+                        </small>
+
+                    </div>
 
 
 
-        <!-- ==================================================
+                    <div class="campo">
+
+                        <label for="confirmar_senha">
+
+                            Confirmar nova senha
+
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="confirmar_senha"
+                            name="confirmar_senha"
+                            minlength="6"
+                            required>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="botao salvar">
+
+                        🔑 Alterar senha
+
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+
+            <!-- ==================================================
              EXCLUIR CONTA
         ================================================== -->
 
-        <section
-            class="painel perigo"
-            id="excluir">
+            <section
+                class="painel perigo"
+                id="excluir">
 
 
-            <div class="painel-header">
+                <div class="painel-header">
 
-                <div>
+                    <div>
 
-                    <h2>
+                        <h2>
 
-                        ⚠️ Excluir conta
+                            ⚠️ Excluir conta
 
-                    </h2>
+                        </h2>
 
 
-                    <p>
+                        <p>
 
-                        Esta ação não poderá ser desfeita.
+                            Esta ação não poderá ser desfeita.
 
-                    </p>
+                        </p>
+
+                    </div>
 
                 </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="botao botao-perigo"
-                onclick="abrirExcluir()">
-
-                🗑️ Excluir minha conta
-
-            </button>
-
-
-        </section>
-
-
-    </main>
-
-</div>
-
-
-
-<!-- ==================================================
-     MODAL EXCLUIR CONTA
-================================================== -->
-
-<div
-    class="modal"
-    id="modalExcluir">
-
-
-    <div class="modal-conteudo">
-
-
-        <button
-            class="modal-fechar"
-            onclick="fecharExcluir()">
-
-            ×
-
-        </button>
-
-
-        <h2>
-
-            ⚠️ Excluir conta
-
-        </h2>
-
-
-        <p>
-
-            Tem certeza que deseja excluir sua conta?
-
-        </p>
-
-
-        <p>
-
-            Todos os seus dados serão removidos
-            permanentemente.
-
-        </p>
-
-
-        <form
-            method="POST">
-
-
-            <input
-                type="hidden"
-                name="acao"
-                value="excluir">
-
-
-            <div class="campo">
-
-                <label for="senha_excluir">
-
-                    Digite sua senha para confirmar:
-
-                </label>
-
-
-                <input
-                    type="password"
-                    id="senha_excluir"
-                    name="senha_excluir"
-                    required>
-
-            </div>
-
-
-            <div class="modal-botoes">
 
 
                 <button
                     type="button"
-                    class="botao"
-                    onclick="fecharExcluir()">
+                    class="botao botao-perigo"
+                    onclick="abrirExcluir()">
 
-                    Cancelar
-
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="botao botao-perigo">
-
-                    Sim, excluir minha conta
+                    🗑️ Excluir minha conta
 
                 </button>
 
 
-            </div>
+            </section>
 
 
-        </form>
-
+        </main>
 
     </div>
 
-</div>
+
+
+    <!-- ==================================================
+     MODAL EXCLUIR CONTA
+================================================== -->
+
+    <div
+        class="modal"
+        id="modalExcluir">
+
+
+        <div class="modal-conteudo">
+
+
+            <button
+                class="modal-fechar"
+                onclick="fecharExcluir()">
+
+                ×
+
+            </button>
+
+
+            <h2>
+
+                ⚠️ Excluir conta
+
+            </h2>
+
+
+            <p>
+
+                Tem certeza que deseja excluir sua conta?
+
+            </p>
+
+
+            <p>
+
+                Todos os seus dados serão removidos
+                permanentemente.
+
+            </p>
+
+
+            <form
+                method="POST">
+
+
+                <input
+                    type="hidden"
+                    name="acao"
+                    value="excluir">
+
+
+                <div class="campo">
+
+                    <label for="senha_excluir">
+
+                        Digite sua senha para confirmar:
+
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="senha_excluir"
+                        name="senha_excluir"
+                        required>
+
+                </div>
+
+
+                <div class="modal-botoes">
+
+
+                    <button
+                        type="button"
+                        class="botao"
+                        onclick="fecharExcluir()">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="botao botao-perigo">
+
+                        Sim, excluir minha conta
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
 
 
 
-<script>
+    <script>
+        // ==================================================
+        // MOSTRAR DADOS
+        // ==================================================
 
+        function mostrarDados() {
 
-// ==================================================
-// MOSTRAR DADOS
-// ==================================================
-
-function mostrarDados() {
-
-    document
-        .getElementById("dados")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-// ==================================================
-// MOSTRAR SEGURANÇA
-// ==================================================
-
-function mostrarSenha() {
-
-    document
-        .getElementById("seguranca")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-// ==================================================
-// MOSTRAR EXCLUSÃO
-// ==================================================
-
-function mostrarExcluir() {
-
-    document
-        .getElementById("excluir")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-// ==================================================
-// ABRIR MODAL
-// ==================================================
-
-function abrirExcluir() {
-
-    document
-        .getElementById("modalExcluir")
-        .style.display = "flex";
-
-}
-
-
-// ==================================================
-// FECHAR MODAL
-// ==================================================
-
-function fecharExcluir() {
-
-    document
-        .getElementById("modalExcluir")
-        .style.display = "none";
-
-}
-
-
-// ==================================================
-// FECHAR CLICANDO FORA
-// ==================================================
-
-document
-    .getElementById("modalExcluir")
-    .addEventListener("click", function(event) {
-
-        if (event.target === this) {
-
-            fecharExcluir();
+            document
+                .getElementById("dados")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
 
         }
 
-    });
+
+        // ==================================================
+        // MOSTRAR SEGURANÇA
+        // ==================================================
+
+        function mostrarSenha() {
+
+            document
+                .getElementById("seguranca")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
 
 
-</script>
+        // ==================================================
+        // MOSTRAR EXCLUSÃO
+        // ==================================================
+
+        function mostrarExcluir() {
+
+            document
+                .getElementById("excluir")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        // ==================================================
+        // ABRIR MODAL
+        // ==================================================
+
+        function abrirExcluir() {
+
+            document
+                .getElementById("modalExcluir")
+                .style.display = "flex";
+
+        }
+
+
+        // ==================================================
+        // FECHAR MODAL
+        // ==================================================
+
+        function fecharExcluir() {
+
+            document
+                .getElementById("modalExcluir")
+                .style.display = "none";
+
+        }
+
+
+        // ==================================================
+        // FECHAR CLICANDO FORA
+        // ==================================================
+
+        document
+            .getElementById("modalExcluir")
+            .addEventListener("click", function(event) {
+
+                if (event.target === this) {
+
+                    fecharExcluir();
+
+                }
+
+            });
+    </script>
 
 
 </body>
