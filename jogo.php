@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -101,8 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Por padrão é comentário principal
         $comentario_pai_id = null;
 
-        // Se veio um comentário pai,
-        // então é uma resposta
+        // Se veio um comentário pai, é uma resposta.
+        // IMPORTANTE:
+        // Mantemos no banco o comentário exato que foi respondido.
+        // Na exibição, todas as respostas serão "achatadas" visualmente
+        // para ficarem em apenas 2 níveis, como no YouTube.
         if (
             isset($_POST["comentario_pai_id"]) &&
             $_POST["comentario_pai_id"] !== ""
@@ -396,6 +398,8 @@ $sqlComentarios = "
 
         u.nome,
 
+        u.foto_perfil,
+
         (
 
             SELECT COUNT(*)
@@ -464,7 +468,85 @@ while (
 
 
 // =====================================================
-// ORGANIZAR COMENTÁRIOS
+// CRIAR ÍNDICE POR ID
+// =====================================================
+
+$comentariosPorId = [];
+
+foreach ($comentarios as $comentario) {
+
+    $comentariosPorId[
+        intval($comentario["id"])
+    ] = $comentario;
+}
+
+
+// =====================================================
+// FUNÇÃO: DESCOBRIR O COMENTÁRIO PRINCIPAL
+// =====================================================
+//
+// Mesmo que no banco existam respostas de respostas de respostas,
+// visualmente todas elas serão colocadas abaixo do comentário principal.
+//
+// Exemplo no banco:
+//
+// Comentário 1
+//   └ Resposta 2
+//       └ Resposta 3
+//           └ Resposta 4
+//
+// Exibição:
+//
+// Comentário 1
+//   ├ Resposta 2
+//   ├ @Resposta 2 - Resposta 3
+//   └ @Resposta 3 - Resposta 4
+//
+
+function descobrirComentarioPrincipal(
+    $comentario,
+    $comentariosPorId
+) {
+
+    $paiId = intval(
+        $comentario["comentario_pai_id"] ?? 0
+    );
+
+    if ($paiId <= 0) {
+        return intval($comentario["id"]);
+    }
+
+    $visitados = [];
+
+    while (
+        $paiId > 0 &&
+        isset($comentariosPorId[$paiId])
+    ) {
+
+        // Evita loop caso haja algum dado inconsistente no banco
+        if (isset($visitados[$paiId])) {
+            break;
+        }
+
+        $visitados[$paiId] = true;
+
+        $pai = $comentariosPorId[$paiId];
+
+        if (empty($pai["comentario_pai_id"])) {
+            return intval($pai["id"]);
+        }
+
+        $paiId = intval(
+            $pai["comentario_pai_id"]
+        );
+    }
+
+    return intval($comentario["id"]);
+}
+
+
+// =====================================================
+// ORGANIZAR EM APENAS 2 NÍVEIS VISUAIS
 // =====================================================
 
 $comentariosPrincipais = [];
@@ -473,19 +555,65 @@ $respostas = [];
 
 foreach ($comentarios as $comentario) {
 
+    if (empty($comentario["comentario_pai_id"])) {
+
+        $comentariosPrincipais[] =
+            $comentario;
+
+        continue;
+    }
+
+    $paiImediatoId =
+        intval($comentario["comentario_pai_id"]);
+
+    // Nome exato da pessoa que recebeu a resposta
+    $comentario["respondendo_nome"] = "";
+
     if (
-        empty($comentario["comentario_pai_id"])
+        isset(
+            $comentariosPorId[
+                $paiImediatoId
+            ]
+        )
+    ) {
+
+        $comentario["respondendo_nome"] =
+            $comentariosPorId[
+                $paiImediatoId
+            ]["nome"];
+    }
+
+    // Descobrir a raiz da conversa
+    $comentarioPrincipalId =
+        descobrirComentarioPrincipal(
+            $comentario,
+            $comentariosPorId
+        );
+
+    // Se por algum motivo a raiz não existir,
+    // trata como comentário principal para não "sumir"
+    if (
+        !isset(
+            $comentariosPorId[
+                $comentarioPrincipalId
+            ]
+        ) ||
+        !empty(
+            $comentariosPorId[
+                $comentarioPrincipalId
+            ]["comentario_pai_id"]
+        )
     ) {
 
         $comentariosPrincipais[] =
             $comentario;
 
-    } else {
-
-        $respostas[
-            $comentario["comentario_pai_id"]
-        ][] = $comentario;
+        continue;
     }
+
+    $respostas[
+        $comentarioPrincipalId
+    ][] = $comentario;
 }
 
 
@@ -500,6 +628,143 @@ $usuarioAtual =
     $logado
     ? intval($_SESSION["usuario_id"])
     : 0;
+
+
+// =====================================================
+// FUNÇÕES VISUAIS
+// =====================================================
+
+function fotoPerfilComentario($usuario) {
+
+    $foto = trim(
+        $usuario["foto_perfil"] ?? ""
+    );
+
+    if ($foto !== "") {
+
+        ?>
+        <img
+            src="<?= htmlspecialchars($foto) ?>"
+            alt="Foto de <?= htmlspecialchars($usuario["nome"]) ?>"
+            class="foto-perfil-comentario"
+        >
+        <?php
+
+    } else {
+
+        ?>
+        <div class="foto-perfil-comentario foto-padrao">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <?php
+    }
+}
+
+
+function botoesComentario(
+    $comentario,
+    $logado
+) {
+
+    ?>
+
+    <div class="acoes">
+
+        <!-- LIKE -->
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="acao"
+                value="interagir"
+            >
+
+            <input
+                type="hidden"
+                name="comentario_id"
+                value="<?= intval($comentario["id"]) ?>"
+            >
+
+            <input
+                type="hidden"
+                name="tipo"
+                value="like"
+            >
+
+            <button
+                type="submit"
+                class="btn-acao"
+                title="Curtir"
+            >
+                <i class="fa-regular fa-thumbs-up"></i>
+                <?= intval($comentario["likes"]) ?>
+            </button>
+
+        </form>
+
+
+        <!-- DISLIKE -->
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="acao"
+                value="interagir"
+            >
+
+            <input
+                type="hidden"
+                name="comentario_id"
+                value="<?= intval($comentario["id"]) ?>"
+            >
+
+            <input
+                type="hidden"
+                name="tipo"
+                value="dislike"
+            >
+
+            <button
+                type="submit"
+                class="btn-acao"
+                title="Não curtir"
+            >
+                <i class="fa-regular fa-thumbs-down"></i>
+                <?= intval($comentario["dislikes"]) ?>
+            </button>
+
+        </form>
+
+
+        <!-- RESPONDER -->
+
+        <?php if ($logado): ?>
+
+            <button
+                type="button"
+                class="btn-responder"
+                onclick='responderComentario(
+                    <?= intval($comentario["id"]) ?>,
+                    <?= json_encode(
+                        $comentario["nome"],
+                        JSON_HEX_TAG |
+                        JSON_HEX_APOS |
+                        JSON_HEX_AMP |
+                        JSON_HEX_QUOT
+                    ) ?>
+                )'
+            >
+                Responder
+            </button>
+
+        <?php endif; ?>
+
+    </div>
+
+    <?php
+}
 
 ?>
 
@@ -537,7 +802,1234 @@ $usuarioAtual =
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     >
 
-    <link rel="stylesheet" href="./css/jogo.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                rgb(20, 29, 41);
+
+            color:
+                rgb(162, 201, 212);
+
+            font-family:
+                Arial,
+                sans-serif;
+        }
+
+
+        /* =========================================
+           FUNDO
+        ========================================= */
+
+        .fundoimg {
+
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+
+        .fundoimg img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .fundoimg::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                rgba(20, 29, 41, .78);
+        }
+
+
+        /* =========================================
+           BOTÃO VOLTAR
+        ========================================= */
+
+        .Btn {
+
+            position: fixed;
+
+            top: 10px;
+
+            left: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            background:
+                rgb(39, 57, 80);
+
+            transition: .3s;
+
+            text-decoration: none;
+
+            z-index: 20;
+        }
+
+
+        .sign {
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+
+        .sign svg {
+
+            width: 17px;
+        }
+
+
+        .sign svg path {
+
+            fill: white;
+        }
+
+
+        .text {
+
+            position: absolute;
+
+            right: 0;
+
+            width: 0;
+
+            opacity: 0;
+
+            color: white;
+
+            font-size: 14px;
+
+            transition: .3s;
+        }
+
+
+        .Btn:hover {
+
+            width: 90px;
+
+            border-radius: 40px;
+
+            background:
+                #B82c46;
+        }
+
+
+        .Btn:hover .sign {
+
+            width: 30%;
+
+            padding-left: 10px;
+        }
+
+
+        .Btn:hover .text {
+
+            opacity: 1;
+
+            width: 60%;
+
+            padding-right: 10px;
+        }
+
+
+        /* =========================================
+           CONTAINER
+        ========================================= */
+
+        .containerjogo {
+
+            min-height: 100vh;
+
+            width: 73%;
+
+            margin: auto;
+
+            background:
+                rgba(27, 40, 56, .85);
+
+            border-left:
+                2px solid rgba(68, 91, 119, .7);
+
+            border-right:
+                2px solid rgba(68, 91, 119, .7);
+
+            padding-top: 20px;
+
+            box-shadow:
+                0 5px 10px rgba(0, 0, 0, .5);
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo-container {
+
+            margin:
+                0 25%;
+
+            height: 100px;
+        }
+
+
+        .logo-container img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+
+        .logo-container h1 {
+
+            text-align: center;
+
+            padding-top: 25px;
+        }
+
+
+        /* =========================================
+           PESQUISA
+        ========================================= */
+
+        .linha-divisoria {
+
+            margin-top: 3%;
+
+            width: 100%;
+
+            height: 70px;
+
+            background:
+                rgba(24, 36, 51, .75);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+
+        .input-box {
+
+            width: 90%;
+
+            height: 40px;
+        }
+
+
+        .input-box input {
+
+            width: 100%;
+
+            height: 100%;
+
+            background:
+                transparent;
+
+            border:
+                2px solid rgba(255, 255, 255, .2);
+
+            border-radius: 40px;
+
+            outline: none;
+
+            font-size: 16px;
+
+            color:
+                rgb(162, 201, 212);
+
+            padding:
+                10px 20px;
+        }
+
+
+        .input-box input::placeholder {
+
+            color:
+                #c5c5c5;
+        }
+
+
+        /* =========================================
+           COMENTÁRIOS
+        ========================================= */
+
+        #comentarios {
+
+            margin:
+                6% 3% 0;
+
+            border-radius: 8px;
+
+            border:
+                1px solid rgb(36, 53, 75);
+
+            min-height: 480px;
+
+            background:
+                rgba(20, 29, 41, 1);
+
+            padding:
+                18px 16px;
+        }
+
+
+        /*
+            Cada .thread é uma conversa completa:
+            1 comentário principal + todas as respostas.
+        */
+        .thread {
+
+            padding:
+                8px 4px 18px;
+
+            border-bottom:
+                1px solid rgba(162, 201, 212, .10);
+
+            margin-bottom: 12px;
+        }
+
+
+        .thread:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .comentario {
+
+            background: transparent;
+
+            padding: 8px 4px;
+
+            border-radius: 8px;
+        }
+
+
+        .conteudo-comentario {
+
+            min-width: 0;
+
+            flex: 1;
+        }
+
+
+        /* =========================================
+           FOTO DE PERFIL
+        ========================================= */
+
+        .foto-perfil-comentario {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            flex-shrink: 0;
+
+            background:
+                rgb(39, 57, 80);
+
+            border:
+                1px solid
+                rgba(162, 201, 212, .25);
+        }
+
+
+        .foto-padrao {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color:
+                rgb(162, 201, 212);
+
+            font-size: 16px;
+        }
+
+
+        /* =========================================
+           TOPO COMENTÁRIO
+        ========================================= */
+
+        .linha-comentario {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+        }
+
+
+        .topo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 4px;
+        }
+
+
+        .topo a {
+
+            color:
+                rgb(220, 235, 240);
+
+            text-decoration: none;
+        }
+
+
+        .topo a:hover {
+
+            color: white;
+        }
+
+
+        .nome {
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+
+        .data {
+
+            font-size: 11px;
+
+            color:
+                #8fa0a8;
+        }
+
+
+        /* =========================================
+           TEXTO
+        ========================================= */
+
+        .texto-comentario {
+
+            margin:
+                4px 0 7px;
+
+            word-wrap: break-word;
+
+            overflow-wrap: anywhere;
+
+            white-space: normal;
+
+            color:
+                rgb(205, 220, 225);
+
+            line-height: 1.45;
+
+            font-size: 14px;
+        }
+
+
+        .mencao {
+
+            color:
+                #6eb8ff;
+
+            font-weight: bold;
+
+            margin-right: 5px;
+        }
+
+
+        /* =========================================
+           AÇÕES
+        ========================================= */
+
+        .acoes {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+            margin-top: 4px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .acoes form {
+
+            display: inline;
+        }
+
+
+        .acoes button {
+
+            min-height: 30px;
+
+            padding:
+                4px 9px;
+
+            border: none;
+
+            border-radius: 18px;
+
+            background: transparent;
+
+            color:
+                rgb(150, 175, 183);
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            transition: .2s;
+        }
+
+
+        .acoes button:hover {
+
+            background:
+                rgba(162, 201, 212, .10);
+
+            color:
+                rgb(220, 235, 240);
+        }
+
+
+        .btn-acao i {
+
+            margin-right: 3px;
+        }
+
+
+        .btn-responder {
+
+            font-weight: bold;
+
+            color:
+                rgb(180, 205, 212) !important;
+        }
+
+
+        /* =========================================
+           RESPOSTAS - APENAS SEGUNDO NÍVEL VISUAL
+        ========================================= */
+
+        .bloco-respostas {
+
+            position: relative;
+
+            margin-left: 52px;
+
+            margin-top: 5px;
+
+            /*
+                Espaço reservado para as linhas que
+                conectam visualmente as respostas.
+            */
+            padding-left: 22px;
+        }
+
+
+        /*
+            Linha vertical principal.
+            Ela acompanha todas as respostas abertas,
+            semelhante ao visual das conversas do YouTube.
+        */
+        .respostas {
+
+            position: relative;
+        }
+
+
+        .respostas::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            bottom: 14px;
+
+            width: 1px;
+
+            background:
+                rgba(162, 201, 212, .28);
+
+            border-radius: 10px;
+        }
+
+
+        .btn-toggle-respostas {
+
+            border: none;
+
+            background: transparent;
+
+            color:
+                #6eb8ff;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            padding:
+                7px 10px;
+
+            border-radius: 18px;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+
+        .btn-toggle-respostas:hover {
+
+            background:
+                rgba(110, 184, 255, .10);
+        }
+
+
+        .btn-toggle-respostas i {
+
+            width: 18px;
+
+            margin-right: 4px;
+        }
+
+
+        .respostas {
+
+            display: none;
+
+            margin-top: 4px;
+
+            padding-left: 20px;
+        }
+
+
+        .respostas.abertas {
+
+            display: block;
+        }
+
+
+        /*
+            IMPORTANTE:
+            todas as respostas usam o mesmo recuo.
+            Não existe .respostas dentro de .respostas.
+        */
+        .respostas .comentario {
+
+            position: relative;
+
+            margin-bottom: 2px;
+
+            padding:
+                7px 0;
+        }
+
+
+        /*
+            Linha horizontal ligando a linha vertical
+            até cada resposta.
+        */
+        .respostas .comentario::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -20px;
+
+            top: 24px;
+
+            width: 20px;
+
+            height: 1px;
+
+            background:
+                rgba(162, 201, 212, .28);
+        }
+
+
+        /*
+            Pequena curva no encontro da linha vertical
+            com cada resposta.
+        */
+        .respostas .comentario::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: -20px;
+
+            top: 14px;
+
+            width: 10px;
+
+            height: 11px;
+
+            border-left:
+                1px solid rgba(162, 201, 212, .28);
+
+            border-bottom:
+                1px solid rgba(162, 201, 212, .28);
+
+            border-bottom-left-radius: 12px;
+
+            pointer-events: none;
+        }
+
+
+        .respostas .foto-perfil-comentario {
+
+            width: 34px;
+
+            height: 34px;
+        }
+
+
+        /* =========================================
+           ÁREA "RESPONDENDO"
+        ========================================= */
+
+        #respondendo {
+
+            display: none;
+
+            margin:
+                0 1rem 8px;
+
+            padding:
+                8px 12px;
+
+            background:
+                rgb(39, 57, 80);
+
+            border-radius: 5px;
+
+            font-size: 14px;
+        }
+
+
+        #respondendo strong {
+
+            color:
+                #6eb8ff;
+        }
+
+
+        #respondendo button {
+
+            margin-left: 8px;
+
+            border: none;
+
+            background: transparent;
+
+            color:
+                rgb(162, 201, 212);
+
+            cursor: pointer;
+        }
+
+
+        #respondendo button:hover {
+
+            color: #ff7089;
+        }
+
+
+        /* =========================================
+           BARRA COMENTÁRIO
+        ========================================= */
+
+        .barra-comentario {
+
+            width: 100%;
+
+            background:
+                rgb(31, 46, 65);
+
+            padding:
+                15px 10px;
+
+            position: sticky;
+
+            bottom: 0;
+
+            z-index: 10;
+
+            border-top:
+                1px solid rgba(162, 201, 212, .12);
+        }
+
+
+        .input-area {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin:
+                0 1rem;
+        }
+
+
+        .input-area input {
+
+            width: 100%;
+
+            padding: 10px 14px;
+
+            color:
+                rgb(220, 235, 240);
+
+            background:
+                rgb(20, 29, 41);
+
+            border-radius: 20px;
+
+            border:
+                1px solid rgba(162, 201, 212, .25);
+
+            outline: none;
+        }
+
+
+        .input-area input:focus {
+
+            border-color:
+                rgba(162, 201, 212, .65);
+        }
+
+
+        .btnEnviar {
+
+            padding:
+                8px 19px;
+
+            background:
+                rgb(162, 201, 212);
+
+            border: none;
+
+            color:
+                rgb(27, 40, 56);
+
+            border-radius: 20px;
+
+            cursor: pointer;
+        }
+
+
+        .btnEnviar:hover {
+
+            background:
+                rgb(190, 220, 228);
+        }
+
+
+        /* =========================================
+           LOGIN
+        ========================================= */
+
+        .aviso-login {
+
+            text-align: center;
+
+            padding: 12px;
+        }
+
+
+        .aviso-login a {
+
+            color:
+                rgb(162, 201, 212);
+        }
+
+
+        /* =========================================
+           SEM COMENTÁRIOS
+        ========================================= */
+
+        .sem-comentarios {
+
+            text-align: center;
+
+            padding: 40px;
+        }
+
+
+        .sem-comentarios i {
+
+            font-size: 35px;
+        }
+
+
+        .sem-comentarios p {
+
+            margin-top: 15px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width: 832px) {
+
+            .containerjogo {
+
+                width: 100%;
+
+                border: none;
+            }
+
+
+            .logo-container {
+
+                margin:
+                    0 15%;
+            }
+        }
+
+
+        @media(max-width: 480px) {
+
+            .logo-container {
+
+                height: 80px;
+            }
+
+
+            #comentarios {
+
+                margin:
+                    6% 3% 0;
+
+                min-height: 630px;
+
+                padding:
+                    12px 9px;
+            }
+
+
+            .input-area {
+
+                margin: 0;
+            }
+
+
+            .input-area input {
+
+                font-size: 16px;
+            }
+
+
+            .btnEnviar {
+
+                padding:
+                    8px 14px;
+            }
+
+
+            .linha-comentario {
+
+                gap: 9px;
+            }
+
+
+            .foto-perfil-comentario {
+
+                width: 36px;
+
+                height: 36px;
+            }
+
+
+            .respostas .foto-perfil-comentario {
+
+                width: 30px;
+
+                height: 30px;
+            }
+
+            .bloco-respostas {
+
+                margin-left: 38px;
+
+                padding-left: 16px;
+            }
+
+
+            .respostas {
+
+                padding-left: 16px;
+            }
+
+
+            .respostas .comentario::before {
+
+                left: -16px;
+
+                width: 16px;
+            }
+
+
+            .respostas .comentario::after {
+
+                left: -16px;
+            }
+
+
+
+            .bloco-respostas {
+
+                margin-left: 34px;
+            }
+
+
+            .respostas {
+
+                padding-left: 5px;
+            }
+
+
+            .data {
+
+                width: 100%;
+            }
+        }
+
+    
+        /* =========================================
+           LINHAS CONECTANDO COMENTÁRIO E RESPOSTAS
+           ========================================= */
+
+        .thread {
+
+            position: relative;
+        }
+
+
+        .comentario-principal {
+
+            position: relative;
+        }
+
+
+        /*
+            A linha sai da região da foto do comentário
+            principal e continua até a área das respostas.
+        */
+        .thread.respostas-conectadas
+        .comentario-principal::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 21px;
+
+            bottom: -40px;
+
+            width: 1px;
+
+            height: 46px;
+
+            background:
+                rgba(162, 201, 212, .38);
+
+            border-radius: 10px;
+
+            pointer-events: none;
+
+            z-index: 1;
+        }
+
+
+        /*
+            O bloco das respostas começa alinhado
+            depois da foto do comentário principal.
+        */
+        .thread.respostas-conectadas
+        .bloco-respostas::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -31px;
+
+            top: 0;
+
+            width: 1px;
+
+            height: 48px;
+
+            background:
+                rgba(162, 201, 212, .38);
+
+            border-radius: 10px;
+
+            pointer-events: none;
+        }
+
+
+        /*
+            Linha horizontal que cria a ramificação:
+                    |
+                    |________ respostas
+        */
+        .thread.respostas-conectadas
+        .bloco-respostas::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: -31px;
+
+            top: 47px;
+
+            width: 31px;
+
+            height: 1px;
+
+            background:
+                rgba(162, 201, 212, .38);
+
+            pointer-events: none;
+        }
+
+
+        /*
+            A linha vertical das respostas começa
+            exatamente na ramificação do comentário
+            principal.
+        */
+        .thread.respostas-conectadas
+        .respostas::before {
+
+            top: 0;
+
+            bottom: 14px;
+
+            background:
+                rgba(162, 201, 212, .38);
+        }
+
+
+        /*
+            Melhora o encaixe da primeira resposta
+            na linha principal da conversa.
+        */
+        .thread.respostas-conectadas
+        .respostas .comentario:first-child::after {
+
+            border-color:
+                rgba(162, 201, 212, .38);
+        }
+
+
+        @media(max-width: 480px) {
+
+            .thread.respostas-conectadas
+            .comentario-principal::after {
+
+                left: 18px;
+
+                bottom: -38px;
+
+                height: 44px;
+            }
+
+
+            .thread.respostas-conectadas
+            .bloco-respostas::before {
+
+                left: -20px;
+
+                height: 46px;
+            }
+
+
+            .thread.respostas-conectadas
+            .bloco-respostas::after {
+
+                left: -20px;
+
+                top: 45px;
+
+                width: 20px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -669,160 +2161,128 @@ $usuarioAtual =
 
                 <?php foreach ($comentariosPrincipais as $comentario): ?>
 
+                    <?php
 
-                    <!-- =================================
-                         COMENTÁRIO PRINCIPAL
-                    ================================== -->
+                    $idComentarioPrincipal =
+                        intval($comentario["id"]);
+
+                    $listaRespostas =
+                        $respostas[
+                            $idComentarioPrincipal
+                        ] ?? [];
+
+                    // Texto completo da thread para pesquisa
+                    $textoPesquisa =
+                        $comentario["nome"] . " " .
+                        $comentario["texto"];
+
+                    foreach (
+                        $listaRespostas
+                        as $respostaPesquisa
+                    ) {
+
+                        $textoPesquisa .= " " .
+                            ($respostaPesquisa["respondendo_nome"] ?? "") .
+                            " " .
+                            $respostaPesquisa["nome"] .
+                            " " .
+                            $respostaPesquisa["texto"];
+                    }
+
+                    ?>
+
 
                     <div
-                        class="comentario"
+                        class="thread"
                         data-texto="<?= htmlspecialchars(
-                            strtolower(
-                                $comentario["texto"]
+                            mb_strtolower(
+                                $textoPesquisa,
+                                "UTF-8"
                             )
                         ) ?>"
                     >
 
 
-                        <!-- USUÁRIO -->
+                        <!-- =================================
+                             COMENTÁRIO PRINCIPAL
+                        ================================== -->
 
-                        <div class="topo">
+                        <div class="comentario comentario-principal">
 
-                            <i
-                                class="fa-solid fa-user icone"
-                            ></i>
-
-
-                            <a
-                                href="perfil.php?id=<?= intval($comentario["usuario_id"]) ?>"
-                                class="nome"
-                            >
-
-                                <?= htmlspecialchars(
-                                    $comentario["nome"]
-                                ) ?>
-
-                            </a>
+                            <div class="linha-comentario">
 
 
-                            <span class="data">
+                                <!-- FOTO -->
 
-                                <?= date(
-                                    "d/m/Y H:i",
-                                    strtotime(
-                                        $comentario["data_criacao"]
-                                    )
-                                ) ?>
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- TEXTO -->
-
-                        <p class="texto-comentario">
-
-                            <?= nl2br(
-                                htmlspecialchars(
-                                    $comentario["texto"]
-                                )
-                            ) ?>
-
-                        </p>
-
-
-                        <!-- AÇÕES -->
-
-                        <div class="acoes">
-
-
-                            <!-- LIKE -->
-
-                            <form method="POST">
-
-                                <input
-                                    type="hidden"
-                                    name="acao"
-                                    value="interagir"
+                                <a
+                                    href="perfil.php?id=<?= intval($comentario["usuario_id"]) ?>"
+                                    aria-label="Abrir perfil de <?= htmlspecialchars($comentario["nome"]) ?>"
                                 >
-
-                                <input
-                                    type="hidden"
-                                    name="comentario_id"
-                                    value="<?= intval($comentario["id"]) ?>"
-                                >
-
-                                <input
-                                    type="hidden"
-                                    name="tipo"
-                                    value="like"
-                                >
-
-                                <button type="submit">
-
-                                    👍
-                                    <?= intval($comentario["likes"]) ?>
-
-                                </button>
-
-                            </form>
+                                    <?php
+                                    fotoPerfilComentario(
+                                        $comentario
+                                    );
+                                    ?>
+                                </a>
 
 
-                            <!-- DISLIKE -->
-
-                            <form method="POST">
-
-                                <input
-                                    type="hidden"
-                                    name="acao"
-                                    value="interagir"
-                                >
-
-                                <input
-                                    type="hidden"
-                                    name="comentario_id"
-                                    value="<?= intval($comentario["id"]) ?>"
-                                >
-
-                                <input
-                                    type="hidden"
-                                    name="tipo"
-                                    value="dislike"
-                                >
-
-                                <button type="submit">
-
-                                    👎
-                                    <?= intval($comentario["dislikes"]) ?>
-
-                                </button>
-
-                            </form>
+                                <div class="conteudo-comentario">
 
 
-                            <!-- RESPONDER -->
+                                    <!-- TOPO -->
 
-                            <?php if ($logado): ?>
+                                    <div class="topo">
 
-                                <button
-                                    type="button"
-                                    class="btn-responder"
-                                    onclick="responderComentario(
-                                        <?= intval($comentario["id"]) ?>,
-                                        '<?= htmlspecialchars(
-                                            $comentario["nome"],
-                                            ENT_QUOTES
-                                        ) ?>'
-                                    )"
-                                >
+                                        <a
+                                            href="perfil.php?id=<?= intval($comentario["usuario_id"]) ?>"
+                                            class="nome"
+                                        >
+                                            <?= htmlspecialchars(
+                                                $comentario["nome"]
+                                            ) ?>
+                                        </a>
 
-                                    ↩ Responder
 
-                                </button>
+                                        <span class="data">
 
-                            <?php endif; ?>
+                                            <?= date(
+                                                "d/m/Y H:i",
+                                                strtotime(
+                                                    $comentario["data_criacao"]
+                                                )
+                                            ) ?>
 
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- TEXTO -->
+
+                                    <p class="texto-comentario">
+
+                                        <?= nl2br(
+                                            htmlspecialchars(
+                                                $comentario["texto"]
+                                            )
+                                        ) ?>
+
+                                    </p>
+
+
+                                    <!-- AÇÕES -->
+
+                                    <?php
+                                    botoesComentario(
+                                        $comentario,
+                                        $logado
+                                    );
+                                    ?>
+
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -832,182 +2292,156 @@ $usuarioAtual =
                         ================================== -->
 
                         <?php if (
-                            isset(
-                                $respostas[
-                                    $comentario["id"]
-                                ]
-                            )
+                            count($listaRespostas) > 0
                         ): ?>
 
-                            <div class="respostas">
+                            <?php
+
+                            $quantidadeRespostas =
+                                count($listaRespostas);
+
+                            $textoQtd =
+                                $quantidadeRespostas === 1
+                                ? "1 resposta"
+                                : $quantidadeRespostas . " respostas";
+
+                            $idBloco =
+                                "respostas-" .
+                                $idComentarioPrincipal;
+
+                            ?>
+
+                            <div class="bloco-respostas">
+
+                                <button
+                                    type="button"
+                                    class="btn-toggle-respostas"
+                                    onclick="alternarRespostas(
+                                        '<?= $idBloco ?>',
+                                        this
+                                    )"
+                                    data-quantidade="<?= htmlspecialchars($textoQtd) ?>"
+                                >
+
+                                    <i class="fa-solid fa-chevron-down"></i>
+
+                                    <span>
+                                        Ver <?= htmlspecialchars($textoQtd) ?>
+                                    </span>
+
+                                </button>
 
 
-                                <?php foreach (
-                                    $respostas[
-                                        $comentario["id"]
-                                    ]
-                                    as $resposta
-                                ): ?>
+                                <div
+                                    class="respostas"
+                                    id="<?= $idBloco ?>"
+                                >
 
 
-                                    <div
-                                        class="comentario"
-                                        data-texto="<?= htmlspecialchars(
-                                            strtolower(
-                                                $resposta["texto"]
-                                            )
-                                        ) ?>"
-                                    >
+                                    <?php foreach (
+                                        $listaRespostas
+                                        as $resposta
+                                    ): ?>
 
 
-                                        <!-- USUÁRIO -->
+                                        <div class="comentario resposta">
 
-                                        <div class="topo">
-
-                                            <i
-                                                class="fa-solid fa-user icone"
-                                            ></i>
+                                            <div class="linha-comentario">
 
 
-                                            <a
-                                                href="perfil.php?id=<?= intval($resposta["usuario_id"]) ?>"
-                                                class="nome"
-                                            >
+                                                <!-- FOTO -->
 
-                                                <?= htmlspecialchars(
-                                                    $resposta["nome"]
-                                                ) ?>
+                                                <a
+                                                    href="perfil.php?id=<?= intval($resposta["usuario_id"]) ?>"
+                                                    aria-label="Abrir perfil de <?= htmlspecialchars($resposta["nome"]) ?>"
+                                                >
+                                                    <?php
+                                                    fotoPerfilComentario(
+                                                        $resposta
+                                                    );
+                                                    ?>
+                                                </a>
 
-                                            </a>
+
+                                                <div class="conteudo-comentario">
 
 
-                                            <span class="data">
+                                                    <!-- TOPO -->
 
-                                                <?= date(
-                                                    "d/m/Y H:i",
-                                                    strtotime(
-                                                        $resposta["data_criacao"]
-                                                    )
-                                                ) ?>
+                                                    <div class="topo">
 
-                                            </span>
+                                                        <a
+                                                            href="perfil.php?id=<?= intval($resposta["usuario_id"]) ?>"
+                                                            class="nome"
+                                                        >
+                                                            <?= htmlspecialchars(
+                                                                $resposta["nome"]
+                                                            ) ?>
+                                                        </a>
+
+
+                                                        <span class="data">
+
+                                                            <?= date(
+                                                                "d/m/Y H:i",
+                                                                strtotime(
+                                                                    $resposta["data_criacao"]
+                                                                )
+                                                            ) ?>
+
+                                                        </span>
+
+                                                    </div>
+
+
+                                                    <!-- TEXTO -->
+
+                                                    <p class="texto-comentario">
+
+                                                        <?php if (
+                                                            !empty(
+                                                                $resposta["respondendo_nome"]
+                                                            )
+                                                        ): ?>
+
+                                                            <span class="mencao">
+                                                                @<?= htmlspecialchars(
+                                                                    $resposta["respondendo_nome"]
+                                                                ) ?>
+                                                            </span>
+
+                                                        <?php endif; ?>
+
+                                                        <?= nl2br(
+                                                            htmlspecialchars(
+                                                                $resposta["texto"]
+                                                            )
+                                                        ) ?>
+
+                                                    </p>
+
+
+                                                    <!-- AÇÕES -->
+
+                                                    <?php
+                                                    botoesComentario(
+                                                        $resposta,
+                                                        $logado
+                                                    );
+                                                    ?>
+
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
 
 
-                                        <!-- TEXTO -->
-
-                                        <p class="texto-comentario">
-
-                                            <?= nl2br(
-                                                htmlspecialchars(
-                                                    $resposta["texto"]
-                                                )
-                                            ) ?>
-
-                                        </p>
+                                    <?php endforeach; ?>
 
 
-                                        <!-- AÇÕES -->
-
-                                        <div class="acoes">
-
-
-                                            <!-- LIKE -->
-
-                                            <form method="POST">
-
-                                                <input
-                                                    type="hidden"
-                                                    name="acao"
-                                                    value="interagir"
-                                                >
-
-                                                <input
-                                                    type="hidden"
-                                                    name="comentario_id"
-                                                    value="<?= intval($resposta["id"]) ?>"
-                                                >
-
-                                                <input
-                                                    type="hidden"
-                                                    name="tipo"
-                                                    value="like"
-                                                >
-
-                                                <button type="submit">
-
-                                                    👍
-                                                    <?= intval($resposta["likes"]) ?>
-
-                                                </button>
-
-                                            </form>
-
-
-                                            <!-- DISLIKE -->
-
-                                            <form method="POST">
-
-                                                <input
-                                                    type="hidden"
-                                                    name="acao"
-                                                    value="interagir"
-                                                >
-
-                                                <input
-                                                    type="hidden"
-                                                    name="comentario_id"
-                                                    value="<?= intval($resposta["id"]) ?>"
-                                                >
-
-                                                <input
-                                                    type="hidden"
-                                                    name="tipo"
-                                                    value="dislike"
-                                                >
-
-                                                <button type="submit">
-
-                                                    👎
-                                                    <?= intval($resposta["dislikes"]) ?>
-
-                                                </button>
-
-                                            </form>
-
-
-                                            <!-- RESPONDER RESPOSTA -->
-
-                                            <?php if ($logado): ?>
-
-                                                <button
-                                                    type="button"
-                                                    class="btn-responder"
-                                                    onclick="responderComentario(
-                                                        <?= intval($resposta["id"]) ?>,
-                                                        '<?= htmlspecialchars(
-                                                            $resposta["nome"],
-                                                            ENT_QUOTES
-                                                        ) ?>'
-                                                    )"
-                                                >
-
-                                                    ↩ Responder
-
-                                                </button>
-
-                                            <?php endif; ?>
-
-
-                                        </div>
-
-
-                                    </div>
-
-
-                                <?php endforeach; ?>
-
+                                </div>
 
                             </div>
 
@@ -1069,7 +2503,7 @@ $usuarioAtual =
                     >
 
 
-                    <!-- ID DO COMENTÁRIO PAI -->
+                    <!-- ID EXATO DO COMENTÁRIO QUE ESTÁ SENDO RESPONDIDO -->
 
                     <input
                         type="hidden"
@@ -1128,7 +2562,7 @@ $usuarioAtual =
     <script>
 
         // =============================================
-        // PESQUISAR COMENTÁRIOS
+        // PESQUISAR THREADS DE COMENTÁRIOS
         // =============================================
 
         const pesquisa =
@@ -1145,34 +2579,35 @@ $usuarioAtual =
 
                     const texto =
                         this.value
-                            .toLowerCase()
+                            .toLocaleLowerCase("pt-BR")
                             .trim();
 
 
-                    const comentarios =
+                    const threads =
                         document.querySelectorAll(
-                            ".comentario"
+                            ".thread"
                         );
 
 
-                    comentarios.forEach(
-                        function (comentario) {
+                    threads.forEach(
+                        function (thread) {
 
                             const conteudo =
-                                comentario.dataset.texto
-                                    .toLowerCase();
+                                (
+                                    thread.dataset.texto || ""
+                                ).toLocaleLowerCase("pt-BR");
 
 
                             if (
                                 conteudo.includes(texto)
                             ) {
 
-                                comentario.style.display =
+                                thread.style.display =
                                     "";
 
                             } else {
 
-                                comentario.style.display =
+                                thread.style.display =
                                     "none";
                             }
 
@@ -1184,6 +2619,88 @@ $usuarioAtual =
 
         }
 
+
+        // =============================================
+        // ABRIR / FECHAR RESPOSTAS
+        // =============================================
+
+        function alternarRespostas(
+            id,
+            botao
+        ) {
+
+            const bloco =
+                document.getElementById(id);
+
+            if (!bloco) {
+                return;
+            }
+
+            const abriu =
+                bloco.classList.toggle(
+                    "abertas"
+                );
+
+            // Encontrar a conversa completa
+            const thread =
+                botao.closest(".thread");
+
+            // Ativar/desativar as linhas que conectam
+            // o comentário principal às respostas
+            if (thread) {
+
+                thread.classList.toggle(
+                    "respostas-conectadas",
+                    abriu
+                );
+
+            }
+
+            const icone =
+                botao.querySelector("i");
+
+            const texto =
+                botao.querySelector("span");
+
+            const quantidade =
+                botao.dataset.quantidade || "respostas";
+
+
+            if (abriu) {
+
+                if (icone) {
+
+                    icone.className =
+                        "fa-solid fa-chevron-up";
+
+                }
+
+                if (texto) {
+
+                    texto.textContent =
+                        "Ocultar " + quantidade;
+
+                }
+
+            } else {
+
+                if (icone) {
+
+                    icone.className =
+                        "fa-solid fa-chevron-down";
+
+                }
+
+                if (texto) {
+
+                    texto.textContent =
+                        "Ver " + quantidade;
+
+                }
+
+            }
+
+        }
 
         // =============================================
         // RESPONDER COMENTÁRIO
@@ -1218,16 +2735,22 @@ $usuarioAtual =
                 );
 
 
-            if (!comentarioPai) {
+            if (
+                !comentarioPai ||
+                !nomeRespondendo ||
+                !respondendo ||
+                !input
+            ) {
                 return;
             }
 
 
-            comentarioPai.value = id;
+            comentarioPai.value =
+                id;
 
 
             nomeRespondendo.textContent =
-                nome;
+                "@" + nome;
 
 
             respondendo.style.display =
@@ -1235,7 +2758,9 @@ $usuarioAtual =
 
 
             input.placeholder =
-                "Escreva sua resposta...";
+                "Responder a @" +
+                nome +
+                "...";
 
 
             input.focus();
@@ -1363,10 +2888,3 @@ $usuarioAtual =
 $conn->close();
 
 ?>
-
-<input
-    type="hidden"
-    name="comentario_pai_id"
-    id="comentarioPai"
-    value=""
->
