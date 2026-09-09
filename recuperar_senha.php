@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // ==========================================
 
             $mail = new PHPMailer(true);
-            $mail->SMTPDebug = 2;
+            $mail->SMTPDebug = 0;
             $mail->Debugoutput = "html";
             try {
 
@@ -299,7 +299,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $remover->execute();
                 $remover->close();
 
-                $erro = "Erro ao enviar e-mail: " . $mail->ErrorInfo;
+                $erro = "Não foi possível enviar o e-mail. Tente novamente.";
             }
         }
 
