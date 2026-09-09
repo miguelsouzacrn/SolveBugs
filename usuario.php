@@ -628,21 +628,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ⚠️ Excluir conta
 
                 </li>
+
                 <?php if (isset($_SESSION["usuario_tipo"]) && $_SESSION["usuario_tipo"] === "admin"): ?>
 
                     <div class="menu-separador"></div>
 
-                    <div class="menu-titulo">
+                    <li class="ativo">
                         🛠️ Administração
-                    </div>
+                    </li>
 
-                    <a href="cadastro_jogos.php" class="menu-item">
-                        🎮 Cadastrar jogo
-                    </a>
+                    <li>
 
-                    <a href="gerenciar_jogos.php" class="menu-item">
-                        ⚙️ Gerenciar jogos
-                    </a>
+                        <a href="cadastro_jogos.php">
+                            🎮 Cadastrar jogo
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="gerenciar_jogos.php">
+                            ⚙️ Gerenciar jogos
+                        </a>
+
+
+                    </li>
 
                 <?php endif; ?>
 
