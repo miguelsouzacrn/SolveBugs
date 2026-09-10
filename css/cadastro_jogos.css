@@ -1,0 +1,1624 @@
+
+/* ==================================
+   RESET
+================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: rgb(162, 201, 212);
+}
+
+
+/* ==================================
+   BODY
+================================== */
+
+body {
+
+    min-height: 100vh;
+
+    background-color:
+        rgb(20, 29, 41);
+
+    font-family:
+        Arial, Helvetica, sans-serif;
+
+    padding:
+        40px 20px;
+
+}
+
+
+/* ==================================
+   FUNDO
+================================== */
+
+.fundoimg {
+
+    position: fixed;
+
+    width: 100%;
+    height: 100dvh;
+
+    top: 0;
+    left: 0;
+
+    background-image:
+        url("./img/background.png");
+
+    background-size: cover;
+
+    background-position: center;
+
+    z-index: -2;
+
+}
+
+
+.fundoimg::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        rgba(20, 29, 41, 0.65);
+
+}
+
+
+/* ==================================
+   CONTAINER
+================================== */
+
+.containerjogo {
+
+    width: 73%;
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    background-color:
+        rgba(27, 40, 56, 0.88);
+
+    border:
+        2px solid
+        rgba(68, 91, 119, 0.7);
+
+    padding:
+        30px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, .5);
+
+    border-radius:
+        5px;
+
+}
+
+
+/* ==================================
+   TÍTULO
+================================== */
+
+.titulo {
+
+    text-align: center;
+
+    font-size:
+        30px;
+
+    margin-bottom:
+        10px;
+
+}
+
+
+.subtitulo {
+
+    text-align: center;
+
+    color:
+        #c5c5c5;
+
+    margin-bottom:
+        30px;
+
+}
+
+
+/* ==================================
+   DIVISÓRIA
+================================== */
+
+.linha-divisoria {
+
+    width: 100%;
+
+    height: 1px;
+
+    background-color:
+        rgba(162, 201, 212, 0.3);
+
+    margin:
+        20px 0 30px;
+
+}
+
+
+/* ==================================
+   FORMULÁRIO
+================================== */
+
+.form-group {
+
+    margin-bottom:
+        22px;
+
+}
+
+
+.form-group label {
+
+    display:
+        block;
+
+    margin-bottom:
+        8px;
+
+    font-size:
+        15px;
+
+}
+
+
+/* ==================================
+   INPUTS
+================================== */
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+
+    width:
+        100%;
+
+    background-color:
+        rgba(20, 29, 41, 0.9);
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius:
+        5px;
+
+    outline:
+        none;
+
+    padding:
+        12px;
+
+    font-size:
+        16px;
+
+    color:
+        rgb(162, 201, 212);
+
+    transition:
+        .2s;
+
+}
+
+
+textarea {
+
+    min-height:
+        130px;
+
+    resize:
+        vertical;
+
+}
+
+
+select option {
+
+    background-color:
+        rgb(27, 40, 56);
+
+    color:
+        rgb(162, 201, 212);
+
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+
+    border-color:
+        rgb(162, 201, 212);
+
+    box-shadow:
+        0 0 5px
+        rgba(162, 201, 212, .25);
+
+}
+
+
+input::placeholder,
+textarea::placeholder {
+
+    color:
+        #c5c5c5;
+
+}
+
+
+/* ==================================
+   GRID DO FORMULÁRIO
+================================== */
+
+.grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        20px;
+
+}
+
+
+/* ==================================
+   CHECKBOXES
+================================== */
+
+.opcoes {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+    padding:
+        12px;
+
+    background-color:
+        rgba(20, 29, 41, 0.9);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius:
+        5px;
+
+}
+
+
+.opcao {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    background-color:
+        rgb(39, 57, 80);
+
+    padding:
+        8px 12px;
+
+    border-radius:
+        5px;
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s;
+
+}
+
+
+.opcao:hover {
+
+    background-color:
+        rgb(50, 71, 97);
+
+}
+
+
+.opcao input {
+
+    accent-color:
+        rgb(162, 201, 212);
+
+    cursor:
+        pointer;
+
+}
+
+
+/* ==================================
+   UPLOAD
+================================== */
+
+.upload {
+
+    background-color:
+        rgba(20, 29, 41, 0.9);
+
+    border:
+        1px dashed
+        rgba(162, 201, 212, 0.5);
+
+    padding:
+        15px;
+
+    border-radius:
+        5px;
+
+}
+
+
+.upload input {
+
+    width:
+        100%;
+
+    cursor:
+        pointer;
+
+}
+
+
+/* ==================================
+   BOTÃO ENVIAR
+================================== */
+
+.btnEnviar {
+
+    width:
+        100%;
+
+    padding:
+        13px 20px;
+
+    background:
+        rgb(162, 201, 212);
+
+    border:
+        none;
+
+    color:
+        rgb(27, 40, 56);
+
+    border-radius:
+        5px;
+
+    cursor:
+        pointer;
+
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+
+    transition:
+        .2s;
+
+}
+
+
+.btnEnviar:hover {
+
+    border:
+        2px solid
+        rgb(162, 201, 212);
+
+    background:
+        rgb(27, 40, 56);
+
+    color:
+        rgb(162, 201, 212);
+
+}
+
+
+/* ==================================
+   MENSAGENS
+================================== */
+
+.sucesso {
+
+    background-color:
+        rgba(60, 130, 90, .25);
+
+    border:
+        1px solid
+        rgba(100, 200, 130, .5);
+
+    padding:
+        12px;
+
+    border-radius:
+        5px;
+
+    margin-bottom:
+        20px;
+
+    text-align:
+        center;
+
+}
+
+
+.erro {
+
+    background-color:
+        rgba(184, 44, 70, .25);
+
+    border:
+        1px solid
+        #B82c46;
+
+    padding:
+        12px;
+
+    border-radius:
+        5px;
+
+    margin-bottom:
+        20px;
+
+    text-align:
+        center;
+
+}
+
+
+/* ==================================
+   BOTÃO VOLTAR
+================================== */
+
+.Btn {
+
+    position:
+        fixed;
+
+    top:
+        15px;
+
+    left:
+        15px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    width:
+        45px;
+
+    height:
+        45px;
+
+    border-radius:
+        50%;
+
+    overflow:
+        hidden;
+
+    background-color:
+        rgb(39, 57, 80);
+
+    transition:
+        .3s;
+
+    text-decoration:
+        none;
+
+    z-index:
+        10;
+
+}
+
+
+.sign {
+
+    width:
+        100%;
+
+    min-width:
+        45px;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+}
+
+
+.sign svg {
+
+    width:
+        17px;
+
+}
+
+
+.sign svg path {
+
+    fill:
+        white;
+
+}
+
+
+.text {
+
+    width:
+        0;
+
+    opacity:
+        0;
+
+    color:
+        white;
+
+    font-size:
+        14px;
+
+    transition:
+        .3s;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.Btn:hover {
+
+    width:
+        90px;
+
+    border-radius:
+        40px;
+
+    background-color:
+        #B82c46;
+
+}
+
+
+.Btn:hover .sign {
+
+    width:
+        30%;
+
+}
+
+
+.Btn:hover .text {
+
+    opacity:
+        1;
+
+    width:
+        60%;
+
+}
+
+
+/* ============================================================
+   BUSCA IGDB
+============================================================ */
+
+.busca-igdb {
+
+    margin-bottom:
+        30px;
+
+    padding:
+        26px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 31, 45, 0.98),
+            rgba(9, 16, 26, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(111, 202, 225, 0.14);
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 0, 0, 0.25);
+
+}
+
+
+/* ==================================
+   TÍTULO DA BUSCA
+================================== */
+
+.busca-igdb h2 {
+
+    margin:
+        0 0 7px;
+
+    color:
+        #ffffff;
+
+    font-size:
+        22px;
+
+    font-weight:
+        700;
+
+}
+
+
+.busca-igdb > p {
+
+    margin:
+        0 0 20px;
+
+    color:
+        #8fa4b0;
+
+    font-size:
+        14px;
+
+}
+
+
+/* ==================================
+   CAMPO DE BUSCA
+================================== */
+
+.campo-busca-igdb {
+
+    display:
+        flex;
+
+    align-items:
+        stretch;
+
+    gap:
+        10px;
+
+    width:
+        100%;
+
+}
+
+
+/* ==================================
+   INPUT DA IGDB
+================================== */
+
+.campo-busca-igdb input {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+    height:
+        52px;
+
+    padding:
+        0 18px;
+
+    background:
+        rgba(5, 13, 22, 0.85);
+
+    border:
+        1px solid
+        rgba(111, 202, 225, 0.16);
+
+    border-radius:
+        12px;
+
+    outline:
+        none;
+
+    color:
+        #ffffff;
+
+    font-size:
+        15px;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+
+}
+
+
+.campo-busca-igdb input::placeholder {
+
+    color:
+        #718692;
+
+}
+
+
+.campo-busca-igdb input:hover {
+
+    border-color:
+        rgba(111, 202, 225, 0.30);
+
+}
+
+
+.campo-busca-igdb input:focus {
+
+    border-color:
+        rgb(53, 197, 229);
+
+    background:
+        rgba(7, 17, 28, 0.95);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(53, 197, 229, 0.08),
+
+        0 0 22px
+        rgba(53, 197, 229, 0.08);
+
+}
+
+
+/* ==================================
+   BOTÃO BUSCAR
+================================== */
+
+#btnBuscarIGDB {
+
+    height:
+        52px;
+
+    padding:
+        0 24px;
+
+    border:
+        1px solid
+        rgba(101, 224, 247, 0.35);
+
+    border-radius:
+        12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2bc0df,
+            #168ba8
+        );
+
+    color:
+        #061018;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    white-space:
+        nowrap;
+
+    box-shadow:
+        0 7px 20px
+        rgba(30, 181, 214, 0.14);
+
+    transition:
+        transform .2s ease,
+        filter .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+#btnBuscarIGDB:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.1);
+
+    box-shadow:
+        0 10px 28px
+        rgba(30, 181, 214, 0.25);
+
+}
+
+
+#btnBuscarIGDB:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+#btnBuscarIGDB:focus-visible {
+
+    outline:
+        2px solid
+        #70e4ff;
+
+    outline-offset:
+        3px;
+
+}
+
+
+/* ==================================
+   MENSAGEM IGDB
+================================== */
+
+.mensagem-igdb {
+
+    margin-top:
+        14px;
+
+    color:
+        #91a6b2;
+
+    font-size:
+        13px;
+
+}
+
+
+/* ============================================================
+   RESULTADOS DA IGDB
+============================================================ */
+
+.resultados-igdb {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap:
+        22px;
+
+    margin-top:
+        24px;
+
+    width:
+        100%;
+
+}
+
+
+/* ============================================================
+   CARD DO JOGO
+============================================================ */
+
+.resultado-igdb {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    overflow:
+        hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 31, 45, 0.98),
+            rgba(9, 16, 26, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(111, 202, 225, 0.12);
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.28);
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+    min-width:
+        0;
+
+}
+
+
+/* ============================================================
+   HOVER DO CARD
+============================================================ */
+
+.resultado-igdb:hover {
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(83, 211, 239, 0.5);
+
+    box-shadow:
+
+        0 18px 45px
+        rgba(0, 0, 0, 0.45),
+
+        0 0 25px
+        rgba(43, 190, 220, 0.08);
+
+}
+
+
+/* ============================================================
+   IMAGEM DO JOGO
+============================================================ */
+
+.resultado-imagem {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    height:
+        330px;
+
+    overflow:
+        hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172333,
+            #0c131d
+        );
+
+}
+
+
+/* ============================================================
+   CAPA
+============================================================ */
+
+.resultado-imagem img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+    transition:
+        transform .5s ease,
+        filter .3s ease;
+
+}
+
+
+.resultado-igdb:hover
+.resultado-imagem img {
+
+    transform:
+        scale(1.06);
+
+    filter:
+        brightness(1.08);
+
+}
+
+
+/* ============================================================
+   GRADIENTE SOBRE A CAPA
+============================================================ */
+
+.resultado-imagem::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    height:
+        45%;
+
+    pointer-events:
+        none;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(8, 14, 22, 0.9),
+            rgba(8, 14, 22, 0)
+        );
+
+}
+
+
+/* ============================================================
+   SEM CAPA
+============================================================ */
+
+.resultado-imagem > div {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        #91a6b5;
+
+    font-size:
+        15px;
+
+}
+
+
+/* ============================================================
+   INFORMAÇÕES DO JOGO
+============================================================ */
+
+.resultado-info {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    padding:
+        20px;
+
+    flex:
+        1;
+
+}
+
+
+/* ============================================================
+   TÍTULO DO JOGO
+============================================================ */
+
+.resultado-info h3 {
+
+    margin:
+        0 0 16px;
+
+    color:
+        #ffffff;
+
+    font-size:
+        20px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.25;
+
+    min-height:
+        50px;
+
+    display:
+        -webkit-box;
+
+    -webkit-line-clamp:
+        2;
+
+    -webkit-box-orient:
+        vertical;
+
+    overflow:
+        hidden;
+
+}
+
+
+/* ============================================================
+   INFORMAÇÕES
+============================================================ */
+
+.resultado-info p {
+
+    margin:
+        0 0 9px;
+
+    color:
+        #a9bac5;
+
+    font-size:
+        14px;
+
+    line-height:
+        1.45;
+
+}
+
+
+.resultado-info p strong {
+
+    color:
+        #d9e7ed;
+
+    font-weight:
+        600;
+
+}
+
+
+/* ============================================================
+   LANÇAMENTO
+============================================================ */
+
+.resultado-info p:nth-of-type(1) {
+
+    color:
+        #a9bac5;
+
+}
+
+
+/* ============================================================
+   NOTA
+============================================================ */
+
+.resultado-info p:nth-of-type(2) {
+
+    color:
+        #ffd76a;
+
+    font-weight:
+        700;
+
+}
+
+
+/* ============================================================
+   DESENVOLVEDORA
+============================================================ */
+
+.resultado-info p:nth-of-type(3) {
+
+    color:
+        #a9bac5;
+
+}
+
+
+/* ============================================================
+   PLATAFORMAS
+============================================================ */
+
+.resultado-info p:nth-of-type(4) {
+
+    color:
+        #9eb2bd;
+
+    margin-bottom:
+        18px;
+
+    display:
+        -webkit-box;
+
+    -webkit-line-clamp:
+        2;
+
+    -webkit-box-orient:
+        vertical;
+
+    overflow:
+        hidden;
+
+}
+
+
+/* ============================================================
+   BOTÃO USAR JOGO
+============================================================ */
+
+.btnUsarIGDB {
+
+    width:
+        100%;
+
+    margin-top:
+        auto;
+
+    padding:
+        12px 16px;
+
+    border:
+        1px solid
+        rgba(96, 218, 242, 0.3);
+
+    border-radius:
+        10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #27b8d7,
+            #1688a5
+        );
+
+    color:
+        #061018;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+
+}
+
+
+.btnUsarIGDB:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.12);
+
+    box-shadow:
+        0 8px 22px
+        rgba(35, 190, 220, 0.25);
+
+}
+
+
+.btnUsarIGDB:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+.btnUsarIGDB:focus-visible {
+
+    outline:
+        2px solid
+        #70e4ff;
+
+    outline-offset:
+        3px;
+
+}
+
+
+/* ============================================================
+   ESTADO DE CARREGAMENTO
+============================================================ */
+
+.resultados-igdb.carregando {
+
+    opacity:
+        .5;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .resultados-igdb {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVO PRINCIPAL
+============================================================ */
+
+@media (max-width: 832px) {
+
+    .containerjogo {
+
+        width:
+            90%;
+
+        padding:
+            25px;
+
+    }
+
+
+    .grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+/* ============================================================
+   CELULAR
+============================================================ */
+
+@media (max-width: 650px) {
+
+    .resultados-igdb {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            18px;
+
+    }
+
+
+    .resultado-imagem {
+
+        height:
+            380px;
+
+    }
+
+
+    .resultado-info {
+
+        padding:
+            18px;
+
+    }
+
+
+    .resultado-info h3 {
+
+        font-size:
+            19px;
+
+    }
+
+
+    /* Busca */
+
+    .busca-igdb {
+
+        padding:
+            20px;
+
+        border-radius:
+            16px;
+
+    }
+
+
+    .busca-igdb h2 {
+
+        font-size:
+            20px;
+
+    }
+
+
+    .campo-busca-igdb {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .campo-busca-igdb input {
+
+        width:
+            100%;
+
+    }
+
+
+    #btnBuscarIGDB {
+
+        width:
+            100%;
+
+    }
+
+}
+
+
+/* ============================================================
+   CELULAR PEQUENO
+============================================================ */
+
+@media (max-width: 480px) {
+
+    body {
+
+        padding:
+            20px 10px;
+
+    }
+
+
+    .containerjogo {
+
+        width:
+            100%;
+
+        padding:
+            20px 15px;
+
+    }
+
+
+    .titulo {
+
+        font-size:
+            24px;
+
+    }
+
+
+    .opcoes {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .opcao {
+
+        width:
+            100%;
+
+    }
+
+
+    .resultado-imagem {
+
+        height:
+            340px;
+
+    }
+
+
+    .resultado-info {
+
+        padding:
+            16px;
+
+    }
+
+
+    .resultado-info p {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .btnUsarIGDB {
+
+        padding:
+            11px;
+
+    }
+
+}
+

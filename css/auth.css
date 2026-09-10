@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --bg: #1b2838;
+    --bg-dark: #141d29;
+    --bg-light: #273850;
+    --text: #a2c9d4;
+    --text-muted: #c5c5c5;
+    --border: rgba(255, 255, 255, 0.2);
+    --accent: #38bdf8;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(180deg, var(--bg), var(--bg-dark));
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.imgLogo {
+    position: fixed;
+    width: 320px;
+    top: 40px;
+    opacity: .9;
+    transition: .3s;
+}
+
+.imgLogo:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.container {
+    width: 420px;
+    background: rgba(27, 40, 56, .85);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+    backdrop-filter: blur(8px);
+    animation: fadeIn .6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container h1 {
+    font-size: 32px;
+    text-align: center;
+    color: #fff;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 22px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.2);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    outline: none;
+    font-size: 15px;
+    color: var(--text);
+    padding: 15px 45px 15px 20px;
+    transition: .2s;
+}
+
+.input-box input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(56,189,248,.4);
+}
+
+.input-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.lembrar-esqueci {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 14px;
+    margin: -5px 0 18px;
+}
+
+.lembrar-esqueci a,
+.registra-link a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.lembrar-esqueci a:hover,
+.registra-link a:hover {
+    text-decoration: underline;
+}
+
+.container-botao {
+    display: flex;
+}
+
+.login {
+    width: 100%;
+    min-height: 50px;
+    background: var(--text);
+    border: 2px solid transparent;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bg);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.login:hover {
+    background: transparent;
+    border-color: var(--text);
+    color: var(--text);
+}
+
+.registra-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.alerta {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 13px;
+    text-align: center;
+}
+
+.alerta.erro {
+    background: rgba(231,76,60,.15);
+    border: 1px solid rgba(231,76,60,.5);
+    color: #ffb3aa;
+}
+
+.alerta.sucesso {
+    background: rgba(46,204,113,.15);
+    border: 1px solid rgba(46,204,113,.5);
+    color: #a9f2c5;
+}
+
+.Btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--bg-light);
+    transition: .3s;
+    z-index: 10;
+    text-decoration: none;
+}
+
+.sign {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign svg { width: 17px; }
+.sign svg path { fill: white; }
+
+.Btn .text {
+    position: absolute;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 14px;
+    transition: .3s;
+}
+
+.Btn:hover {
+    width: 130px;
+    border-radius: 40px;
+}
+
+.Btn:hover .sign {
+    width: 30%;
+    padding-left: 10px;
+}
+
+.Btn:hover .text {
+    opacity: 1;
+    width: 70%;
+    padding-right: 10px;
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 25px 20px;
+        margin-top: 90px;
+    }
+
+    .imgLogo {
+        width: 200px;
+        top: 20px;
+    }
+
+    .Btn {
+        bottom: 20px;
+        left: 20px;
+    }
+}
