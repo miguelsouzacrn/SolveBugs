@@ -305,7 +305,7 @@ function formatarData($data)
         content="width=device-width, initial-scale=1.0">
 
     <title>
-        SolveBugs
+        SolveBugs t
     </title>
 
 
