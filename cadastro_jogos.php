@@ -1473,166 +1473,233 @@ if (
         // MOSTRA RESULTADOS
         // ========================================================
 
-        function mostrarResultados(
-            jogos
+      function mostrarResultados(jogos) {
+
+    resultados.innerHTML = "";
+
+    jogos.forEach(function(jogo) {
+
+        const card = document.createElement("article");
+
+        card.className = "resultado-igdb";
+
+
+        /* =====================================================
+           ESCOLHER A MELHOR IMAGEM DISPONÍVEL
+        ===================================================== */
+
+        let imagem = "";
+
+        if (jogo.capa) {
+
+            imagem = jogo.capa;
+
+        } else if (
+            jogo.artworks &&
+            jogo.artworks.length > 0
         ) {
 
-            resultados.innerHTML =
-                "";
+            imagem = jogo.artworks[0];
+
+        } else if (
+            jogo.screenshots &&
+            jogo.screenshots.length > 0
+        ) {
+
+            imagem = jogo.screenshots[0];
+
+        }
 
 
-            jogos.forEach(
-                function(jogo) {
+        /* =====================================================
+           DATA
+        ===================================================== */
 
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    card.className =
-                        "resultado-igdb";
+        const data = jogo.data_lancamento
+            ? formatarData(jogo.data_lancamento)
+            : "Não informada";
 
 
-                    let capa =
-                        jogo.capa ||
-                        "";
+        /* =====================================================
+           NOTA
+        ===================================================== */
+
+        const nota =
+            jogo.rating !== null &&
+            jogo.rating !== undefined
+                ? Number(jogo.rating).toFixed(1)
+                : "N/A";
 
 
-                    let data =
-                        jogo.data_lancamento ?
-                        formatarData(
-                            jogo.data_lancamento
-                        ) :
-                        "Não informada";
+        /* =====================================================
+           DESENVOLVEDORA
+        ===================================================== */
+
+        const desenvolvedora =
+            jogo.desenvolvedora ||
+            "Não informada";
 
 
-                    let nota =
-                        jogo.rating ?
-                        Number(
-                            jogo.rating
-                        ).toFixed(1) :
-                        "N/A";
+        /* =====================================================
+           PLATAFORMAS
+        ===================================================== */
+
+        let plataformas = "Não informadas";
+
+        if (
+            jogo.plataformas &&
+            jogo.plataformas.length
+        ) {
+
+            plataformas =
+                jogo.plataformas
+                    .slice(0, 4)
+                    .join(" • ");
+
+        }
 
 
-                    let desenvolvedora =
-                        jogo.desenvolvedora ||
-                        "Não informada";
+        /* =====================================================
+           GÊNEROS
+        ===================================================== */
+
+        let generos = "";
+
+        if (
+            jogo.generos &&
+            jogo.generos.length
+        ) {
+
+            generos =
+                jogo.generos
+                    .slice(0, 3)
+                    .join(" • ");
+
+        }
 
 
-                    let plataformas =
-                        jogo.plataformas &&
-                        jogo.plataformas.length ?
-                        jogo.plataformas.join(
-                            ", "
-                        ) :
-                        "Não informadas";
+        /* =====================================================
+           HTML DO CARD
+        ===================================================== */
+
+        card.innerHTML = `
+
+            <div class="resultado-imagem">
+
+                ${
+                    imagem
+                    ?
+                    `
+                        <img
+                            src="${escapeHTML(imagem)}"
+                            alt="${escapeHTML(jogo.nome)}"
+                            loading="lazy"
+                            onerror="
+                                this.style.display='none';
+                                this.parentElement.classList.add('sem-imagem');
+                            "
+                        >
+                    `
+                    :
+                    `
+                        <div class="sem-imagem">
+                            <span>🎮</span>
+                            <p>Imagem não disponível</p>
+                        </div>
+                    `
+                }
+
+            </div>
 
 
-                    card.innerHTML = `
+            <div class="resultado-info">
 
-                <div class="resultado-imagem">
+                <h3 title="${escapeHTML(jogo.nome)}">
+                    ${escapeHTML(jogo.nome)}
+                </h3>
+
+
+                <p>
+                    <strong>📅</strong>
+                    ${escapeHTML(data)}
+                </p>
+
+
+                <p>
+                    <strong>⭐</strong>
 
                     ${
-                        capa
-                        ?
-                        `<img
-                            src="${escapeHTML(capa)}"
-                            alt="${escapeHTML(jogo.nome)}"
-                        >`
-                        :
-                        `<div>
-                            Sem capa
-                        </div>`
+                        nota !== "N/A"
+                            ? nota + " / 100"
+                            : "N/A"
                     }
-
-                </div>
-
-
-                <div class="resultado-info">
-
-                    <h3>
-                        ${escapeHTML(jogo.nome)}
-                    </h3>
+                </p>
 
 
-                    <p>
-                        <strong>
-                            Lançamento:
-                        </strong>
-
-                        ${data}
-                    </p>
+                <p>
+                    <strong>🏢</strong>
+                    ${escapeHTML(desenvolvedora)}
+                </p>
 
 
-                    <p>
-                        <strong>
-                            Nota:
-                        </strong>
-
-                        ⭐ ${nota}
-                    </p>
-
-
-                    <p>
-                        <strong>
-                            Desenvolvedora:
-                        </strong>
-
-                        ${escapeHTML(
-                            desenvolvedora
-                        )}
-                    </p>
-
-
-                    <p>
-                        <strong>
-                            Plataformas:
-                        </strong>
-
-                        ${escapeHTML(
-                            plataformas
-                        )}
-                    </p>
-
-
-                    <button
-                        type="button"
-                        class="btnUsarIGDB"
-                    >
-                        ➕ Usar este jogo
-                    </button>
-
-                </div>
-
-            `;
-
-
-                    const botao =
-                        card.querySelector(
-                            ".btnUsarIGDB"
-                        );
-
-
-                    botao.addEventListener(
-                        "click",
-                        function() {
-
-                            usarJogo(
-                                jogo
-                            );
-
-                        }
-                    );
-
-
-                    resultados.appendChild(
-                        card
-                    );
-
+                ${
+                    generos
+                    ?
+                    `
+                        <p>
+                            <strong>🏷️</strong>
+                            ${escapeHTML(generos)}
+                        </p>
+                    `
+                    :
+                    ""
                 }
-            );
-        }
+
+
+                <p>
+                    <strong>🎮</strong>
+                    ${escapeHTML(plataformas)}
+                </p>
+
+
+                <button
+                    type="button"
+                    class="btnUsarIGDB"
+                >
+                    ✓ Usar este jogo
+                </button>
+
+            </div>
+
+        `;
+
+
+        /* =====================================================
+           BOTÃO USAR
+        ===================================================== */
+
+        const botao =
+            card.querySelector(".btnUsarIGDB");
+
+
+        botao.addEventListener(
+            "click",
+            function() {
+
+                usarJogo(jogo);
+
+            }
+        );
+
+
+        resultados.appendChild(card);
+
+    });
+
+}
+
+
+
 
 
         // ========================================================
