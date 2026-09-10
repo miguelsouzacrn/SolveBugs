@@ -930,10 +930,6 @@ input {
    CAROUSEL
 ========================================================= */
 
-/* =========================================================
-   CAROUSEL
-========================================================= */
-
 .carousel-solvebugs {
 
     position: relative;
@@ -947,7 +943,7 @@ input {
         18px;
 
     background:
-        #0b1119;
+        #101923;
 
     box-shadow:
         var(--shadow);
@@ -955,132 +951,27 @@ input {
 }
 
 
-/* =========================================================
-   ITEM
-========================================================= */
-
 .carousel-item {
 
     position: relative;
 
     height: 450px;
 
-    overflow: hidden;
-
-    background:
-        #0b1119;
-
 }
 
-
-/* =========================================================
-   IMAGEM DE FUNDO DESFOCADA
-========================================================= */
-
-.carousel-bg {
-
-    position: absolute;
-
-    inset: -30px;
-
-    width: calc(100% + 60px);
-
-    height: calc(100% + 60px);
-
-    object-fit: cover;
-
-    object-position: center;
-
-    filter:
-        blur(25px);
-
-    transform:
-        scale(1.08);
-
-    opacity:
-        .45;
-
-}
-
-
-/* =========================================================
-   ESCURECIMENTO DO FUNDO
-========================================================= */
-
-.carousel-bg-overlay {
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        rgba(8, 14, 21, .55);
-
-}
-
-
-/* =========================================================
-   IMAGEM PRINCIPAL
-========================================================= */
 
 .carousel-banner {
-
-    position: absolute;
-
-    inset: 0;
 
     width: 100%;
 
     height: 100%;
 
-    object-fit: contain;
-
-    object-position: center;
-
-    display: block;
-
-    z-index: 2;
+    object-fit: cover;
 
 }
 
-
-/* =========================================================
-   OVERLAY PARA O TEXTO
-========================================================= */
-
-.carousel-overlay {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 3;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(8,14,21,.92) 0%,
-            rgba(8,14,21,.58) 35%,
-            rgba(8,14,21,.18) 70%,
-            rgba(8,14,21,.05) 100%
-        );
-
-}
-
-
-/* =========================================================
-   SEM IMAGEM
-========================================================= */
 
 .carousel-sem-imagem {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 2;
 
     width: 100%;
 
@@ -1108,15 +999,26 @@ input {
 }
 
 
-/* =========================================================
-   TEXTO DO CAROUSEL
-========================================================= */
+.carousel-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,14,21,.95) 0%,
+            rgba(8,14,21,.55) 45%,
+            rgba(8,14,21,.15) 100%
+        );
+
+}
+
 
 .carousel-caption {
 
     position: absolute;
-
-    z-index: 4;
 
     left: 8%;
 
@@ -1130,10 +1032,6 @@ input {
 
 }
 
-
-/* =========================================================
-   BADGE
-========================================================= */
 
 .badge-destaque {
 
@@ -1168,10 +1066,6 @@ input {
 }
 
 
-/* =========================================================
-   TÍTULO
-========================================================= */
-
 .carousel-caption h2 {
 
     margin-bottom:
@@ -1186,16 +1080,8 @@ input {
     font-weight:
         700;
 
-    text-shadow:
-        0 3px 15px
-        rgba(0,0,0,.55);
-
 }
 
-
-/* =========================================================
-   DESCRIÇÃO
-========================================================= */
 
 .carousel-caption p {
 
@@ -1208,16 +1094,8 @@ input {
     font-size:
         14px;
 
-    text-shadow:
-        0 2px 8px
-        rgba(0,0,0,.5);
-
 }
 
-
-/* =========================================================
-   BOTÃO
-========================================================= */
 
 .btnVerJogo {
 
@@ -1265,165 +1143,14 @@ input {
 }
 
 
-/* =========================================================
-   CONTROLES
-========================================================= */
-
 .carousel-control-prev,
 .carousel-control-next {
 
-    width:
-        8%;
-
-    z-index:
-        5;
+    width: 8%;
 
 }
 
 
-/* =========================================================
-   INDICADORES
-========================================================= */
-
-.carousel-indicators {
-
-    z-index:
-        6;
-
-}
-
-
-.carousel-indicators button {
-
-    width:
-        25px;
-
-    height:
-        3px;
-
-    border-radius:
-        5px;
-
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 832px) {
-
-    .carousel-item {
-
-        height:
-            390px;
-
-    }
-
-
-    .carousel-caption {
-
-        width:
-            70%;
-
-        left:
-            7%;
-
-        bottom:
-            65px;
-
-    }
-
-}
-
-
-/* =========================================================
-   CELULAR
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .carousel-item {
-
-        height:
-            330px;
-
-    }
-
-
-    .carousel-caption {
-
-        width:
-            78%;
-
-        left:
-            8%;
-
-        bottom:
-            50px;
-
-    }
-
-
-    .carousel-caption h2 {
-
-        font-size:
-            27px;
-
-    }
-
-
-    .carousel-caption p {
-
-        font-size:
-            11px;
-
-    }
-
-
-    .carousel-bg {
-
-        filter:
-            blur(18px);
-
-        opacity:
-            .40;
-
-    }
-
-}
-
-
-/* =========================================================
-   CELULAR PEQUENO
-========================================================= */
-
-@media (max-width: 420px) {
-
-    .carousel-item {
-
-        height:
-            300px;
-
-    }
-
-
-    .badge-destaque {
-
-        font-size:
-            9px;
-
-    }
-
-
-    .carousel-caption h2 {
-
-        font-size:
-            23px;
-
-    }
-
-}
 /* =========================================================
    SEÇÕES
 ========================================================= */
